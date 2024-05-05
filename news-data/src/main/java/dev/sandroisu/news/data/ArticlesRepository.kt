@@ -11,8 +11,8 @@ class ArticlesRepository(
     private val database: NewsDatabase,
     private val api: NewsApi,
 ) {
-    fun getAll(): Request<Flow<List<Article>>> {
-        return Request.InProgress(
+    fun getAll(): RequestResult<Flow<List<Article>>> {
+        return RequestResult.InProgress(
             database.articlesDao.getAll().map { articles ->
                 articles.map { it.toArticle() }
             },
@@ -24,10 +24,10 @@ class ArticlesRepository(
     }
 }
 
-sealed class Request<E>(protected val data: E?) {
-    class InProgress<E>(data: E?) : Request<E>(data)
+sealed class RequestResult<E>(protected val data: E?) {
+    class InProgress<E>(data: E?) : RequestResult<E>(data)
 
-    class Success<E>(data: E?) : Request<E>(data)
+    class Success<E>(data: E?) : RequestResult<E>(data)
 
-    class Error<E>(data: E?) : Request<E>(data)
+    class Error<E>(data: E?) : RequestResult<E>(data)
 }
