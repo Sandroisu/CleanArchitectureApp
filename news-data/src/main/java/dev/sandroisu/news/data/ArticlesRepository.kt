@@ -1,13 +1,13 @@
 package dev.sandroisu.news.data
 
 import dev.sandroisu.news.data.model.Article
+import dev.sandroisu.news.data.model.toArticle
 import dev.sandroisu.news.data.model.toArticleDbo
 import dev.sandroisu.news.database.NewsDatabase
 import dev.sandroisu.news.database.models.ArticleDBO
 import dev.sandroisu.newsapi.NewsApi
 import dev.sandroisu.newsapi.models.ArticleDTO
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -38,12 +38,7 @@ class ArticlesRepository(
                     database.articlesDao.insert(requestResult.requreData())
                 }
 
-        cachedAllArticles.combine(remoteArticles)
-        return flow {
-            RequestResult.InProgress(
-                cachedAllArticles,
-            )
-        }
+        return flow { remoteArticles.map { it.data?.onEach { adbo -> adbo.toArticle() } } }
     }
 
     private fun getAllFromDatabase(): Flow<RequestResult.Success<List<ArticleDBO>>> {
