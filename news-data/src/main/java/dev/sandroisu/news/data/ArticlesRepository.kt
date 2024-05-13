@@ -31,11 +31,11 @@ class ArticlesRepository(
                 }
             }.filterIsInstance<RequestResult.Success<List<ArticleDTO>?>>()
                 .map { successResult ->
-                    successResult.requreData()
+                    successResult.requireData()
                         .map { articleDTO -> articleDTO.toArticleDbo() }
                         .let { RequestResult.Success<List<ArticleDBO>?>(it) }
                 }.onEach { requestResult ->
-                    database.articlesDao.insert(requestResult.requreData())
+                    database.articlesDao.insert(requestResult.requireData())
                 }
 
         return flow { remoteArticles.map { it.data?.onEach { adbo -> adbo.toArticle() } } }
@@ -59,11 +59,11 @@ class ArticlesRepository(
             }
         }.filterIsInstance<RequestResult.Success<List<ArticleDTO>?>>()
             .map { successResult ->
-                successResult.requreData()
+                successResult.requireData()
                     .map { articleDTO -> articleDTO.toArticleDbo() }
                     .let { RequestResult.Success<List<ArticleDBO>?>(it) }
             }.onEach { requestResult ->
-                database.articlesDao.insert(requestResult.requreData())
+                database.articlesDao.insert(requestResult.requireData())
             }
     }
 
@@ -80,7 +80,7 @@ sealed class RequestResult<E>(internal val data: E?) {
     class Error<E>(data: E?) : RequestResult<E>(data)
 }
 
-fun <T : Any> RequestResult<T?>.requreData(): T {
+fun <T : Any> RequestResult<T?>.requireData(): T {
     return checkNotNull(data)
 }
 
