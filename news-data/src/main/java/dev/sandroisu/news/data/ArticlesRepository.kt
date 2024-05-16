@@ -47,12 +47,6 @@ class ArticlesRepository(
             .map { RequestResult.Success(it) }
     }
 
-    private fun getAllFromDatabaseSilently(): Flow<RequestResult.Success<List<ArticleDBO>>> {
-        return database.articlesDao
-            .getAll()
-            .map { RequestResult.Success(it) }
-    }
-
     private fun getAllFromServer(): Flow<RequestResult.Success<List<ArticleDBO>?>> {
         return flow {
             emit(api.everything())
