@@ -8,5 +8,7 @@ internal fun ArticleDBO.toArticle(): Article {
 }
 
 internal fun ArticleDTO.toArticleDbo(): ArticleDBO {
-    TODO("Not yet implemented")
+    return ArticleDBO(
+        author = author,
+    )
 }
