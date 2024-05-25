@@ -68,18 +68,6 @@ class ArticlesRepository(
     }
 
     suspend fun search(query: String): Flow<Article> {
-        val queriedArticles =
-            flow {
-                emit(api.everything(query = query))
-            }.map { result ->
-                if (result.isSuccess) {
-                    val response = result.getOrThrow()
-                    RequestResult.Success(response.articles)
-                } else {
-                    RequestResult.Error(null)
-                }
-            }
-        val cachedAllArticles: Flow<RequestResult.Success<List<ArticleDBO>>> = getAllFromDatabase()
     }
 }
 
