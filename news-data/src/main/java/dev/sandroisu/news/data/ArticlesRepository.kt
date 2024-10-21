@@ -11,6 +11,7 @@ import dev.sandroisu.newsapi.models.ResponseDTO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
@@ -49,9 +50,17 @@ class ArticlesRepository(
     }
 
     private fun getAllFromServer(): Flow<RequestResult<ResponseDTO<ArticleDTO>>> {
+        val apiRequest = flow { emit(api.everything()) }
+            .onEach { result ->
+                if (result.isSuccess) {
+                    saveNetResponseToCache(checkNotNull(result.getOrThrow()).articles)
+                }
+            }
+        val start = flowOf<RequestResult<ResponseDTO<ArticleDTO>>>(RequestResult.InProgress())
         return flow {
-            emit(api.everything())
-        }.map { result: Result<ResponseDTO<ArticleDTO>> -> result.toRequestResult() }
+            emit(RequestResult.InProgress())
+            emit(api.everything().toRequestResult())
+        }
             .onEach { requestResult: RequestResult<ResponseDTO<ArticleDTO>> ->
                 if (requestResult is RequestResult.Success) {
                     saveNetResponseToCache(checkNotNull(requestResult.data).articles)
@@ -70,7 +79,7 @@ class ArticlesRepository(
 }
 
 sealed class RequestResult<E>(internal val data: E? = null) {
-    class InProgress<E>(data: E) : RequestResult<E>(data)
+    class InProgress<E>(data: E? = null) : RequestResult<E>(data)
 
     class Success<E>(data: E) : RequestResult<E>(data)
 
