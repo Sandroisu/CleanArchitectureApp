@@ -9,10 +9,12 @@ import dev.sandroisu.newsapi.NewsApi
 import dev.sandroisu.newsapi.models.ArticleDTO
 import dev.sandroisu.newsapi.models.ResponseDTO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 
 class ArticlesRepository(
@@ -21,26 +23,10 @@ class ArticlesRepository(
 ) {
     fun getAll(): Flow<RequestResult<List<Article>>> {
         val cachedAllArticles: Flow<RequestResult.Success<List<ArticleDBO>>> = getAllFromDatabase()
-        val remoteArticles =
-            flow {
-                emit(api.everything())
-            }.map { result ->
-                if (result.isSuccess) {
-                    val response = result.getOrThrow()
-                    RequestResult.Success(response.articles)
-                } else {
-                    RequestResult.Error()
-                }
-            }.filterIsInstance<RequestResult.Success<List<ArticleDTO>?>>()
-                .map { successResult ->
-                    successResult.requireData()
-                        .map { articleDTO -> articleDTO.toArticleDbo() }
-                        .let { RequestResult.Success<List<ArticleDBO>?>(it) }
-                }.onEach { requestResult ->
-                    database.articlesDao.insert(requestResult.requireData())
-                }
+        val remoteArticles: Flow<RequestResult<ResponseDTO<ArticleDTO>>> = getAllFromServer()
+        cachedAllArticles.combine(remoteArticles) { dboObjects: RequestResult<ArticleDBO>, dtoObjects: RequestResult<ArticleDTO> ->
 
-        return flow { remoteArticles.map { it.data?.onEach { adbo -> adbo.toArticle() } } }
+        }
     }
 
     private fun getAllFromDatabase(): Flow<RequestResult.Success<List<ArticleDBO>>> {
@@ -55,17 +41,9 @@ class ArticlesRepository(
                 if (result.isSuccess) {
                     saveNetResponseToCache(checkNotNull(result.getOrThrow()).articles)
                 }
-            }
+            }.map { it.toRequestResult() }
         val start = flowOf<RequestResult<ResponseDTO<ArticleDTO>>>(RequestResult.InProgress())
-        return flow {
-            emit(RequestResult.InProgress())
-            emit(api.everything().toRequestResult())
-        }
-            .onEach { requestResult: RequestResult<ResponseDTO<ArticleDTO>> ->
-                if (requestResult is RequestResult.Success) {
-                    saveNetResponseToCache(checkNotNull(requestResult.data).articles)
-                }
-            }
+        return merge(apiRequest, start)
     }
 
     private suspend fun saveNetResponseToCache(data: List<ArticleDTO>) {
