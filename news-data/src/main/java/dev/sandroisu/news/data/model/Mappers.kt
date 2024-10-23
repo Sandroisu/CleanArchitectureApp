@@ -8,6 +8,10 @@ internal fun ArticleDBO.toArticle(): Article {
     return Article(0, Source("", ""), "", "", "", "", "", Date(), "")
 }
 
+internal fun ArticleDTO.toArticle(): Article {
+    return Article(0, Source("", ""), "", "", "", "", "", Date(), "")
+}
+
 internal fun ArticleDTO.toArticleDbo(): ArticleDBO {
 
 }

@@ -22,9 +22,14 @@ class ArticlesRepository(
     private val api: NewsApi,
 ) {
     fun getAll(): Flow<RequestResult<List<Article>>> {
-        val cachedAllArticles: Flow<RequestResult.Success<List<ArticleDBO>>> = getAllFromDatabase()
-        val remoteArticles: Flow<RequestResult<ResponseDTO<ArticleDTO>>> = getAllFromServer()
-        cachedAllArticles.combine(remoteArticles) { dboObjects: RequestResult<ArticleDBO>, dtoObjects: RequestResult<ArticleDTO> ->
+        val cachedAllArticles: Flow<RequestResult<List<Article>>> = getAllFromDatabase()
+            .map { result ->
+                result.map { articlesDbos ->
+                    articlesDbos?.map { it.toArticle() }
+                }
+            }
+        val remoteArticles = getAllFromServer()
+        cachedAllArticles.combine(remoteArticles) { dboObjects: RequestResult<Article>, dtoObjects: RequestResult<Article> ->
 
         }
     }
@@ -56,10 +61,10 @@ class ArticlesRepository(
     }
 }
 
-sealed class RequestResult<E>(internal val data: E? = null) {
+sealed class RequestResult<out E>(internal val data: E? = null) {
     class InProgress<E>(data: E? = null) : RequestResult<E>(data)
 
-    class Success<E>(data: E) : RequestResult<E>(data)
+    class Success<E: Any>(data: E) : RequestResult<E>(data)
 
     class Error<E> : RequestResult<E>()
 }
@@ -68,12 +73,14 @@ fun <T : Any> RequestResult<T?>.requireData(): T {
     return checkNotNull(data)
 }
 
-internal fun <I, O> RequestResult<I>.map(mapper: (I?) -> O): RequestResult<O> {
-    val outData = mapper(data)
+internal fun <I, O> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
     return when (this) {
-        is RequestResult.Success -> RequestResult.Success(outData)
+        is RequestResult.Success -> {
+            val outData: O = mapper(checkNotNull(data))
+            RequestResult.Success(checkNotNull(outData))
+        }
         is RequestResult.Error -> RequestResult.Error()
-        is RequestResult.InProgress -> RequestResult.InProgress(outData)
+        is RequestResult.InProgress -> RequestResult.InProgress(data?.let(mapper))
     }
 }
 
