@@ -20,24 +20,32 @@ import kotlinx.coroutines.flow.onEach
 class ArticlesRepository(
     private val database: NewsDatabase,
     private val api: NewsApi,
+    private val requestResponseMergeStrategy: RequestResponseMergeStrategy<List<Article>>,
 ) {
     fun getAll(): Flow<RequestResult<List<Article>>> {
         val cachedAllArticles: Flow<RequestResult<List<Article>>> = getAllFromDatabase()
             .map { result ->
                 result.map { articlesDbos ->
-                    articlesDbos?.map { it.toArticle() }
+                    articlesDbos.map { it.toArticle() }
                 }
             }
-        val remoteArticles = getAllFromServer()
-        cachedAllArticles.combine(remoteArticles) { dboObjects: RequestResult<Article>, dtoObjects: RequestResult<Article> ->
-
+        val remoteArticles: Flow<RequestResult<List<Article>>> = getAllFromServer()
+            .map { requestResult: RequestResult<ResponseDTO<ArticleDTO>> ->
+                requestResult.map { response ->
+                    response.articles.map { it.toArticle() }
+                }
+            }
+        return cachedAllArticles.combine(remoteArticles) { dboObjects: RequestResult<List<Article>>, dtoObjects: RequestResult<List<Article>> ->
+            requestResponseMergeStrategy.merge(dboObjects, dtoObjects)
         }
     }
 
-    private fun getAllFromDatabase(): Flow<RequestResult.Success<List<ArticleDBO>>> {
-        return database.articlesDao
+    private fun getAllFromDatabase(): Flow<RequestResult<List<ArticleDBO>>> {
+        val dbRequest = database.articlesDao
             .getAll()
             .map { RequestResult.Success(it) }
+        val start = flowOf<RequestResult<List<ArticleDBO>>>(RequestResult.InProgress())
+        return merge(start, dbRequest)
     }
 
     private fun getAllFromServer(): Flow<RequestResult<ResponseDTO<ArticleDTO>>> {
@@ -56,15 +64,15 @@ class ArticlesRepository(
         database.articlesDao.insert(dbos)
     }
 
-    // Остановился на 50 минуте
     suspend fun search(query: String): Flow<Article> {
+
     }
 }
 
 sealed class RequestResult<out E>(internal val data: E? = null) {
     class InProgress<E>(data: E? = null) : RequestResult<E>(data)
 
-    class Success<E: Any>(data: E) : RequestResult<E>(data)
+    class Success<E : Any>(data: E) : RequestResult<E>(data)
 
     class Error<E> : RequestResult<E>()
 }
@@ -79,6 +87,7 @@ internal fun <I, O> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
             val outData: O = mapper(checkNotNull(data))
             RequestResult.Success(checkNotNull(outData))
         }
+
         is RequestResult.Error -> RequestResult.Error()
         is RequestResult.InProgress -> RequestResult.InProgress(data?.let(mapper))
     }
