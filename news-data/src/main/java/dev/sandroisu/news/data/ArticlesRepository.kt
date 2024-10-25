@@ -10,7 +10,6 @@ import dev.sandroisu.newsapi.models.ArticleDTO
 import dev.sandroisu.newsapi.models.ResponseDTO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -20,7 +19,7 @@ import kotlinx.coroutines.flow.onEach
 class ArticlesRepository(
     private val database: NewsDatabase,
     private val api: NewsApi,
-    private val requestResponseMergeStrategy: RequestResponseMergeStrategy<List<Article>>,
+    private val mergeStrategy: MergeStrategy<List<Article>>,
 ) {
     fun getAll(): Flow<RequestResult<List<Article>>> {
         val cachedAllArticles: Flow<RequestResult<List<Article>>> = getAllFromDatabase()
@@ -36,7 +35,7 @@ class ArticlesRepository(
                 }
             }
         return cachedAllArticles.combine(remoteArticles) { dboObjects: RequestResult<List<Article>>, dtoObjects: RequestResult<List<Article>> ->
-            requestResponseMergeStrategy.merge(dboObjects, dtoObjects)
+            mergeStrategy.merge(dboObjects, dtoObjects)
         }
     }
 
@@ -74,11 +73,7 @@ sealed class RequestResult<out E>(internal val data: E? = null) {
 
     class Success<E : Any>(data: E) : RequestResult<E>(data)
 
-    class Error<E> : RequestResult<E>()
-}
-
-fun <T : Any> RequestResult<T?>.requireData(): T {
-    return checkNotNull(data)
+    class Error<E>(data: E? = null) : RequestResult<E>(data)
 }
 
 internal fun <I, O> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
@@ -95,7 +90,7 @@ internal fun <I, O> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
 
 internal fun <T> Result<T>.toRequestResult(): RequestResult<T> {
     return when {
-        isSuccess -> RequestResult.Success(getOrThrow())
+        isSuccess -> RequestResult.Success(checkNotNull(getOrThrow()))
         isFailure -> RequestResult.Error()
         else -> {
             error("Impossible branch")
