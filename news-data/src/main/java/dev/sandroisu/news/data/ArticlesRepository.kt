@@ -63,20 +63,17 @@ class ArticlesRepository(
         database.articlesDao.insert(dbos)
     }
 
-    suspend fun search(query: String): Flow<Article> {
-
-    }
 }
 
-sealed class RequestResult<out E>(internal val data: E? = null) {
-    class InProgress<E>(data: E? = null) : RequestResult<E>(data)
+sealed class RequestResult<out E: Any>(internal val data: E? = null) {
+    class InProgress<E: Any>(data: E? = null) : RequestResult<E>(data)
 
     class Success<E : Any>(data: E) : RequestResult<E>(data)
 
-    class Error<E>(data: E? = null) : RequestResult<E>(data)
+    class Error<E: Any>(data: E? = null) : RequestResult<E>(data)
 }
 
-internal fun <I, O> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
+internal fun <I: Any, O: Any> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
     return when (this) {
         is RequestResult.Success -> {
             val outData: O = mapper(checkNotNull(data))
@@ -88,9 +85,9 @@ internal fun <I, O> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
     }
 }
 
-internal fun <T> Result<T>.toRequestResult(): RequestResult<T> {
+internal fun <T: Any> Result<T>.toRequestResult(): RequestResult<T> {
     return when {
-        isSuccess -> RequestResult.Success(checkNotNull(getOrThrow()))
+        isSuccess -> RequestResult.Success(getOrThrow())
         isFailure -> RequestResult.Error()
         else -> {
             error("Impossible branch")

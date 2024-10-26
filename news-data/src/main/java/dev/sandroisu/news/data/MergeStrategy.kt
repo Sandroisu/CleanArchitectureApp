@@ -2,16 +2,28 @@ package dev.sandroisu.news.data
 
 interface MergeStrategy<E> {
 
-    fun merge(right: E, left: E): E
+    fun merge(cache: E, server: E): E
 
 }
 
-private class RequestResultMergeStrategy<T> : MergeStrategy<RequestResult<T>> {
-    override fun merge(right: RequestResult<T>, left: RequestResult<T>): RequestResult<T> {
+private class RequestResultMergeStrategy<T: Any> : MergeStrategy<RequestResult<T>> {
+    override fun merge(cache: RequestResult<T>, server: RequestResult<T>): RequestResult<T> {
         when {
-            right is RequestResult.InProgress && left is RequestResult.InProgress -> merge(
-                right = right,
-                left = left,
+            cache is RequestResult.InProgress && server is RequestResult.InProgress -> merge(
+                cache = cache,
+                server = server,
+            )
+            cache is RequestResult.Success && server is RequestResult.InProgress -> merge(
+                cache = cache,
+                server = server,
+            )
+            cache is RequestResult.InProgress && server is RequestResult.Success -> merge(
+                cache = cache,
+                server = server,
+            )
+            cache is RequestResult.Success && server is RequestResult.Error -> merge(
+                cache = cache,
+                server = server,
             )
 
             else -> error("Not implemented yet")
@@ -20,22 +32,33 @@ private class RequestResultMergeStrategy<T> : MergeStrategy<RequestResult<T>> {
     }
 
     private fun merge(
-        right: RequestResult.InProgress<T>,
-        left: RequestResult.InProgress<T>
+        cache: RequestResult.InProgress<T>,
+        server: RequestResult.InProgress<T>
     ): RequestResult<T> {
         return when {
-            (left.data != null) -> RequestResult.InProgress(data = left.data)
-            else -> RequestResult.InProgress(data = right.data)
+            (server.data != null) -> RequestResult.InProgress(data = server.data)
+            else -> RequestResult.InProgress(data = cache.data)
         }
     }
 
-    private fun <>merge(
-        right: RequestResult.Success<T>,
-        left: RequestResult.InProgress<T>
+    private fun merge(
+        cache: RequestResult.Success<T>,
+        server: RequestResult.InProgress<T>
     ): RequestResult<T> {
-        return when {
-            (left.data != null) -> RequestResult.InProgress(data = left.data)
-            else -> RequestResult.InProgress(data = right.data)
-        }
+        return RequestResult.InProgress(cache.data)
+    }
+
+    private fun merge(
+        cache: RequestResult.InProgress<T>,
+        server: RequestResult.Success<T>
+    ): RequestResult<T> {
+        return RequestResult.InProgress(server.data)
+    }
+
+    private fun merge(
+        cache: RequestResult.Success<T>,
+        server: RequestResult.Error<T>
+    ): RequestResult<T> {
+        return RequestResult.Error(cache.data)
     }
 }
