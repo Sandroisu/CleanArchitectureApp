@@ -6,9 +6,9 @@ interface MergeStrategy<E> {
 
 }
 
-private class RequestResultMergeStrategy<T: Any> : MergeStrategy<RequestResult<T>> {
+class RequestResultMergeStrategy<T: Any> : MergeStrategy<RequestResult<T>> {
     override fun merge(cache: RequestResult<T>, server: RequestResult<T>): RequestResult<T> {
-        when {
+       return when {
             cache is RequestResult.InProgress && server is RequestResult.InProgress -> merge(
                 cache = cache,
                 server = server,
@@ -59,6 +59,6 @@ private class RequestResultMergeStrategy<T: Any> : MergeStrategy<RequestResult<T
         cache: RequestResult.Success<T>,
         server: RequestResult.Error<T>
     ): RequestResult<T> {
-        return RequestResult.Error(cache.data)
+        return RequestResult.Error(cache.data, server.error)
     }
 }
