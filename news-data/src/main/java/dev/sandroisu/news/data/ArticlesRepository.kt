@@ -59,7 +59,7 @@ class ArticlesRepository(
         val apiRequest = flow { emit(api.everything()) }
             .onEach { result ->
                 if (result.isSuccess) {
-                    saveNetResponseToCache(checkNotNull(result.getOrThrow()).articles)
+                    saveNetResponseToCache(result.getOrThrow().articles)
                 }
             }.map { it.toRequestResult() }
         val start = flowOf<RequestResult<ResponseDTO<ArticleDTO>>>(RequestResult.InProgress())
@@ -71,21 +71,22 @@ class ArticlesRepository(
         database.articlesDao.insert(dbos)
     }
 
-}
-
-sealed class RequestResult<out E : Any>(val data: E? = null) {
-    class InProgress<E : Any>(data: E? = null) : RequestResult<E>(data)
-
-    class Success<E : Any>(data: E) : RequestResult<E>(data) {
-        fun requireData(): E = checkNotNull(data)
+    fun fetchLatest(): Flow<RequestResult<List<Article>>>{
+        TODO("Not yet implemented")
     }
 
+}
+
+sealed class RequestResult<out E : Any>(open val data: E? = null) {
+    class InProgress<E : Any>(data: E? = null) : RequestResult<E>(data)
+
+    class Success<E : Any>(override val data: E) : RequestResult<E>(data)
     class Error<E : Any>(data: E? = null, val error: Throwable? = null) : RequestResult<E>(data)
 }
 
 fun <I : Any, O : Any> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
     return when (this) {
-        is RequestResult.Success -> RequestResult.Success(mapper(requireData()))
+        is RequestResult.Success -> RequestResult.Success(mapper(data))
         is RequestResult.Error -> RequestResult.Error()
         is RequestResult.InProgress -> RequestResult.InProgress(data?.let(mapper))
     }

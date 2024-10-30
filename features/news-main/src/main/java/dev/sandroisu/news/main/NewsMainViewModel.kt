@@ -2,18 +2,27 @@ package dev.sandroisu.news.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.sandroisu.news.data.ArticlesRepository
 import dev.sandroisu.news.data.RequestResult
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-internal class NewsMainViewModel(private val getAllArticlesUseCase: GetAllArticlesUseCase) :
+internal class NewsMainViewModel(
+    private val getAllArticlesUseCase: GetAllArticlesUseCase,
+    private val articlesRepository: ArticlesRepository,
+) :
     ViewModel() {
-    private val state: StateFlow<State> = getAllArticlesUseCase().map { articles ->
-        articles.toState()
-    }
+    private val state: StateFlow<State> = getAllArticlesUseCase()
+        .map { articles ->
+            articles.toState()
+        }
         .stateIn(viewModelScope, SharingStarted.Lazily, State.None)
+
+    fun forceUpdate(){
+        articlesRepository.fetchLatest()
+    }
 
 }
 
@@ -29,9 +38,9 @@ private fun RequestResult<List<Article>>.toState(): State {
 sealed class State {
     data object None : State()
 
-    class Loading(val articles: List<Article>?) : State()
+    class Loading(val articles: List<Article>? = null) : State()
 
-    class Error : State()
+    class Error(val articles: List<Article>? = null) : State()
 
     class Success(val articles: List<Article>) : State()
 }
