@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.ksp)
 }
 
@@ -66,4 +67,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.test.manifest)
     debugImplementation(libs.androidx.ui.tooling)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 }
