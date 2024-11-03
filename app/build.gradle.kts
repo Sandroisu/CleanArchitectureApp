@@ -20,6 +20,9 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "NEWS_API_KEY", "\"\"")
+        buildConfigField("String", "NEWS_API_BASE_URL", "\"\"")
     }
 
     buildTypes {
@@ -39,6 +42,7 @@ android {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
@@ -69,4 +73,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+    implementation(project(":news-data"))
+    implementation(project(":newsapi"))
+    implementation(project(":database"))
 }

@@ -2,6 +2,7 @@ package dev.sandroisu.news.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.sandroisu.news.data.ArticlesRepository
 import dev.sandroisu.news.data.RequestResult
 import kotlinx.coroutines.flow.SharingStarted
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 import javax.inject.Provider
 
+@HiltViewModel
 internal class NewsMainViewModel @Inject constructor(
     getAllArticlesUseCase: Provider<GetAllArticlesUseCase>,
 ) : ViewModel() {
