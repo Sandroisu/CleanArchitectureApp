@@ -8,6 +8,8 @@ import dev.sandroisu.news.database.models.ArticleDBO
 import dev.sandroisu.newsapi.NewsApi
 import dev.sandroisu.newsapi.models.ArticleDTO
 import dev.sandroisu.newsapi.models.ResponseDTO
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapConcat
@@ -18,7 +20,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 
-class ArticlesRepository(
+class ArticlesRepository @Inject constructor(
     private val database: NewsDatabase,
     private val api: NewsApi,
 ) {
