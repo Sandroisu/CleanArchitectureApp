@@ -36,7 +36,7 @@ dependencies {
 
     implementation(libs.android.core.ktx)
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.jakarta.inject)
+    implementation(libs.javax.inject)
 
     implementation(project(":database"))
     implementation(project(":newsapi"))

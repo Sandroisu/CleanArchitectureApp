@@ -19,7 +19,7 @@ material = "1.11.0"
 room = "2.6.1"
 ksp = "1.9.23-1.0.20"
 dagger = "2.50"
-jakarta = "2.0.1"
+javax-inject = "1"
 
 [libraries]
 android-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -57,7 +57,7 @@ hilt-android = { module = "com.google.dagger:hilt-android",  version.ref = "dagg
 hilt-compiler = { module = "com.google.dagger:hilt-compiler",  version.ref = "dagger" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
-jakarta-inject = { module = "jakarta.inject:jakarta.inject-api", version.ref = "jakarta" }
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
