@@ -75,6 +75,7 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     implementation(project(":news-data"))
-    implementation(project(":newsapi"))
+    implementation(project(":news-api"))
     implementation(project(":database"))
+    implementation(project(":news-common"))
 }

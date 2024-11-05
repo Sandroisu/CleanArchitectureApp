@@ -1,4 +1,4 @@
-package dev.sandroisu.newsapi.utils
+package dev.sandroisu.api.utils
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind

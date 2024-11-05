@@ -1,24 +1,22 @@
 package dev.sandroisu.news.data
 
+import dev.sandroisu.api.NewsApi
+import dev.sandroisu.api.models.ArticleDTO
+import dev.sandroisu.api.models.ResponseDTO
 import dev.sandroisu.news.data.model.Article
 import dev.sandroisu.news.data.model.toArticle
 import dev.sandroisu.news.data.model.toArticleDbo
 import dev.sandroisu.news.database.NewsDatabase
 import dev.sandroisu.news.database.models.ArticleDBO
-import dev.sandroisu.newsapi.NewsApi
-import dev.sandroisu.newsapi.models.ArticleDTO
-import dev.sandroisu.newsapi.models.ResponseDTO
-import jakarta.inject.Inject
-import jakarta.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 class ArticlesRepository @Inject constructor(
     private val database: NewsDatabase,

@@ -1,4 +1,4 @@
-package dev.sandroisu.newsapi.utils
+package dev.sandroisu.api.utils
 
 import okhttp3.Interceptor
 import okhttp3.Response

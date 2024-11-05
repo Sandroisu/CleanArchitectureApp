@@ -1,6 +1,6 @@
-package dev.sandroisu.newsapi.models
+package dev.sandroisu.api.models
 
-import dev.sandroisu.newsapi.utils.DateTimeUTCSerializer
+import dev.sandroisu.api.utils.DateTimeUTCSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.util.Date

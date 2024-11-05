@@ -1,7 +1,7 @@
 package dev.sandroisu.news.data.model
 
+import dev.sandroisu.api.models.ArticleDTO
 import dev.sandroisu.news.database.models.ArticleDBO
-import dev.sandroisu.newsapi.models.ArticleDTO
 import java.util.Date
 
 internal fun ArticleDBO.toArticle(): Article {

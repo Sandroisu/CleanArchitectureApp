@@ -1,13 +1,13 @@
-package dev.sandroisu.newsapi
+package dev.sandroisu.api
 
 import androidx.annotation.IntRange
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.skydoves.retrofit.adapters.result.ResultCallAdapterFactory
-import dev.sandroisu.newsapi.models.ArticleDTO
-import dev.sandroisu.newsapi.models.Language
-import dev.sandroisu.newsapi.models.ResponseDTO
-import dev.sandroisu.newsapi.models.SortBy
-import dev.sandroisu.newsapi.utils.NewsApiKeyInterceptor
+import dev.sandroisu.api.models.ArticleDTO
+import dev.sandroisu.api.models.Language
+import dev.sandroisu.api.models.ResponseDTO
+import dev.sandroisu.api.models.SortBy
+import dev.sandroisu.api.utils.NewsApiKeyInterceptor
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.OkHttpClient

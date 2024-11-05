@@ -1,4 +1,4 @@
-package dev.sandroisu.newsapi.models
+package dev.sandroisu.api.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
