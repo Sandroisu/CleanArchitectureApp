@@ -1,4 +1,4 @@
-package dev.sandroisu.newssearchapp.ui.theme
+package dev.sandroisu.newssearchapp
 
 import android.content.Context
 import dagger.Module
@@ -6,11 +6,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import dev.sandroisu.news.data.ArticlesRepository
+import dev.sandroisu.api.NewsApi
+import dev.sandroisu.common.AppDispatchers
 import dev.sandroisu.news.database.NewsDatabase
 import dev.sandroisu.news.database.newsDatabase
-import dev.sandroisu.newsapi.NewsApi
-import dev.sandroisu.newssearchapp.BuildConfig
 import javax.inject.Singleton
 
 @Module
@@ -29,6 +28,12 @@ object AppModule {
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): NewsDatabase {
         return newsDatabase(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppCoroutineDispatchers(): AppDispatchers {
+        return AppDispatchers()
     }
 
 
