@@ -3,7 +3,6 @@ package dev.sandroisu.news.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.sandroisu.news.data.ArticlesRepository
 import dev.sandroisu.news.data.RequestResult
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +15,7 @@ import javax.inject.Provider
 internal class NewsMainViewModel @Inject constructor(
     getAllArticlesUseCase: Provider<GetAllArticlesUseCase>,
 ) : ViewModel() {
-    private val state: StateFlow<State> = getAllArticlesUseCase.get().invoke()
+    val state: StateFlow<State> = getAllArticlesUseCase.get().invoke()
         .map { articles ->
             articles.toState()
         }
@@ -28,20 +27,20 @@ internal class NewsMainViewModel @Inject constructor(
 }
 
 
-private fun RequestResult<List<Article>>.toState(): State {
+private fun RequestResult<List<ArticleUI>>.toState(): State {
     return when (this) {
         is RequestResult.Error -> State.Error()
-        is RequestResult.InProgress -> State.Loading(articles = data)
-        is RequestResult.Success -> State.Success(articles = checkNotNull(data))
+        is RequestResult.InProgress -> State.Loading(articlesUI = data)
+        is RequestResult.Success -> State.Success(articlesUI = checkNotNull(data))
     }
 }
 
-sealed class State {
+internal sealed class State {
     data object None : State()
 
-    class Loading(val articles: List<Article>? = null) : State()
+    class Loading(val articlesUI: List<ArticleUI>? = null) : State()
 
-    class Error(val articles: List<Article>? = null) : State()
+    class Error(val articlesUI: List<ArticleUI>? = null) : State()
 
-    class Success(val articles: List<Article>) : State()
+    class Success(val articlesUI: List<ArticleUI>) : State()
 }

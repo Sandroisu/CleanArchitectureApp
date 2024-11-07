@@ -9,7 +9,7 @@ import javax.inject.Inject
 import dev.sandroisu.news.data.model.Article as DataArticle
 
 class GetAllArticlesUseCase @Inject constructor(private val repository: ArticlesRepository) {
-    operator fun invoke(): Flow<RequestResult<List<Article>>> {
+    operator fun invoke(): Flow<RequestResult<List<ArticleUI>>> {
         return repository.getAll()
             .map { requestResult ->
                 requestResult.map { articles ->
@@ -19,7 +19,7 @@ class GetAllArticlesUseCase @Inject constructor(private val repository: Articles
     }
 }
 
-private fun DataArticle.toUiArticles(): Article {
-    return Article()
+private fun DataArticle.toUiArticles(): ArticleUI {
+    return ArticleUI()
 }
 
