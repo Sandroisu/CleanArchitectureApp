@@ -13,5 +13,6 @@ internal fun ArticleDTO.toArticle(): Article {
 }
 
 internal fun ArticleDTO.toArticleDbo(): ArticleDBO {
+    return ArticleDBO(0, dev.sandroisu.news.database.models.Source("", ""), "", "", "", "", "", Date(), "")
 
 }
