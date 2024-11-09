@@ -1,6 +1,9 @@
 package dev.sandroisu.news.main
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -9,33 +12,44 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun NewsMain() {
-    NewsMain(newsMainViewModel = viewModel())
+fun NewsMainScreen() {
+    NewsMainScreen(newsMainViewModel = viewModel())
 }
 
 
 @Composable
-internal fun NewsMain(newsMainViewModel: NewsMainViewModel = viewModel()) {
+internal fun NewsMainScreen(newsMainViewModel: NewsMainViewModel = viewModel()) {
     val state by newsMainViewModel.state.collectAsState()
     when (val currentState = state) {
-        is State.Success -> Articles(currentState)
+        is State.Success -> Articles(currentState.articlesUI)
         is State.Error -> TODO()
-        is State.Loading -> TODO()
-        State.None -> TODO()
+        is State.Loading -> ArticleDuringUpdate()
+        State.None -> NewsEmpty()
     }
 }
 
+@Composable
+private fun ArticleDuringUpdate() {
+    Articles(articlesUI = emptyList<ArticleUI>())
+}
 
 @Composable
-private fun Articles(state: State.Success) {
+private fun NewsEmpty() {
+}
+
+@Preview
+@Composable
+private fun Articles(@PreviewParameter(ArticlesUIPreviewProvider::class) articlesUI: List<ArticleUI>) {
     LazyColumn {
-        items(state.articlesUI) { article ->
+        items(articlesUI) { article ->
             key(article.id) {
                 Article(article)
             }
@@ -46,12 +60,13 @@ private fun Articles(state: State.Success) {
 @Preview
 @Composable
 private fun Article(@PreviewParameter(ArticleUIPreviewProvider::class) article: ArticleUI) {
-    Column {
+    Column(modifier = Modifier.padding(8.dp)) {
         Text(
             text = article.title,
             style = MaterialTheme.typography.headlineMedium,
             maxLines = 1,
         )
+        Spacer(modifier = Modifier.size(8.dp))
         Text(
             text = article.description,
             style = MaterialTheme.typography.bodyMedium,
@@ -60,7 +75,37 @@ private fun Article(@PreviewParameter(ArticleUIPreviewProvider::class) article: 
     }
 }
 
-private class ArticleUIPreviewProvider : PreviewParameterProvider<ArticleUI>{
+
+private class ArticlesUIPreviewProvider : PreviewParameterProvider<List<ArticleUI>> {
+    override val values: Sequence<List<ArticleUI>>
+        get() = sequenceOf(
+            listOf(
+                ArticleUI(
+                    id = 1L,
+                    title = "Title",
+                    description = "Here can be some long text",
+                    imageUrl = "https://picsum.photos/seed/picsum/200/300",
+                    url = "https://www.lipsum.com/"
+                ),
+                ArticleUI(
+                    id = 2L,
+                    title = "Title",
+                    description = "Here can be some long text",
+                    imageUrl = "https://picsum.photos/seed/picsum/200/300",
+                    url = "https://www.lipsum.com/"
+                ),
+                ArticleUI(
+                    id = 3L,
+                    title = "Title",
+                    description = "Here can be some long text",
+                    imageUrl = "https://picsum.photos/seed/picsum/200/300",
+                    url = "https://www.lipsum.com/"
+                )
+            )
+        )
+}
+
+private class ArticleUIPreviewProvider : PreviewParameterProvider<ArticleUI> {
     override val values: Sequence<ArticleUI>
         get() = sequenceOf(
             ArticleUI(
