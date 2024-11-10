@@ -30,15 +30,28 @@ internal fun NewsMainScreen(newsMainViewModel: NewsMainViewModel = viewModel()) 
     val state by newsMainViewModel.state.collectAsState()
     when (val currentState = state) {
         is State.Success -> Articles(currentState.articlesUI)
-        is State.Error -> TODO()
-        is State.Loading -> ArticleDuringUpdate()
+        is State.Error -> ArticlesWithError(articles = currentState.articlesUI)
+        is State.Loading -> ArticlesDuringUpdate(articles = currentState.articlesUI)
         State.None -> NewsEmpty()
     }
 }
 
 @Composable
-private fun ArticleDuringUpdate() {
-    Articles(articlesUI = emptyList<ArticleUI>())
+private fun ArticlesWithError(articles: List<ArticleUI>?) {
+    if (articles == null){
+        NewsEmpty()
+    }else {
+        Articles(articlesUI = articles)
+    }
+}
+
+@Composable
+private fun ArticlesDuringUpdate(articles: List<ArticleUI>?) {
+    if (articles == null){
+        NewsEmpty()
+    }else {
+        Articles(articlesUI = articles)
+    }
 }
 
 @Composable
