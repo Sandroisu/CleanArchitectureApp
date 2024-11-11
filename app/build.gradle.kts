@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "dev.sandroisu.newssearchapp"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "dev.sandroisu.newssearchapp"

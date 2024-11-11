@@ -26,7 +26,11 @@ class RequestResultMergeStrategy<T: Any> : MergeStrategy<RequestResult<T>> {
                 server = server,
             )
 
-            else -> error("Not implemented yet")
+           cache is RequestResult.InProgress && server is RequestResult.Error -> merge(
+               cache = cache,
+               server = server,
+           )
+            else -> error("Unimplemented branch right = $cache left = $server")
         }
 
     }
@@ -61,4 +65,12 @@ class RequestResultMergeStrategy<T: Any> : MergeStrategy<RequestResult<T>> {
     ): RequestResult<T> {
         return RequestResult.Error(cache.data, server.error)
     }
+
+    private fun merge(
+        cache: RequestResult.InProgress<T>,
+        server: RequestResult.Error<T>
+    ): RequestResult<T> {
+        return RequestResult.Error(data = server.data?:cache.data, error = server.error)
+    }
+
 }
