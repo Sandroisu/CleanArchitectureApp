@@ -1,17 +1,21 @@
 package dev.sandroisu.news.main
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -38,24 +42,38 @@ internal fun NewsMainScreen(newsMainViewModel: NewsMainViewModel = viewModel()) 
 
 @Composable
 private fun ArticlesWithError(articles: List<ArticleUI>?) {
-    if (articles == null){
-        NewsEmpty()
-    }else {
-        Articles(articlesUI = articles)
+    Column {
+        Box(
+            Modifier
+                .padding(8.dp)
+                .background(MaterialTheme.colorScheme.error),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = "Error during update", color = MaterialTheme.colorScheme.onError)
+        }
+        if (articles != null) {
+            Articles(articlesUI = articles)
+        }
     }
 }
 
 @Composable
 private fun ArticlesDuringUpdate(articles: List<ArticleUI>?) {
-    if (articles == null){
-        NewsEmpty()
-    }else {
-        Articles(articlesUI = articles)
+    Column {
+        Box(Modifier.padding(8.dp), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        if (articles != null) {
+            Articles(articlesUI = articles)
+        }
     }
 }
 
 @Composable
 private fun NewsEmpty() {
+    Box(contentAlignment = Alignment.Center) {
+        Text("No news")
+    }
 }
 
 @Preview
