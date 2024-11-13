@@ -20,10 +20,10 @@ internal class GetAllArticlesUseCase @Inject constructor(private val repository:
 }
 
 private fun DataArticle.toUiArticles(): ArticleUI {
-    return ArticleUI(id =10L,
-        title = "Title",
-        description = "Here can be some long text",
-        imageUrl = "https://picsum.photos/seed/picsum/200/300",
-        url = "https://www.lipsum.com/")
+    return ArticleUI(id = id,
+        title = title,
+        description = description,
+        imageUrl = urlToImage,
+        url = url)
 }
 

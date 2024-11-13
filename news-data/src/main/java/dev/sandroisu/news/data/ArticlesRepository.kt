@@ -3,6 +3,7 @@ package dev.sandroisu.news.data
 import dev.sandroisu.api.NewsApi
 import dev.sandroisu.api.models.ArticleDTO
 import dev.sandroisu.api.models.ResponseDTO
+import dev.sandroisu.common.Logger
 import dev.sandroisu.news.data.model.Article
 import dev.sandroisu.news.data.model.toArticle
 import dev.sandroisu.news.data.model.toArticleDbo
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class ArticlesRepository @Inject constructor(
     private val database: NewsDatabase,
     private val api: NewsApi,
+    private val logger: Logger,
 ) {
     fun getAll(mergeStrategy: MergeStrategy<RequestResult<List<Article>>> = RequestResultMergeStrategy()): Flow<RequestResult<List<Article>>> {
         val cachedAllArticles: Flow<RequestResult<List<Article>>> = getAllFromDatabase()
@@ -73,6 +75,10 @@ class ArticlesRepository @Inject constructor(
 
     fun fetchLatest(): Flow<RequestResult<List<Article>>>{
         TODO("Not yet implemented")
+    }
+
+    private companion object {
+
     }
 
 }

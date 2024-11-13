@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -46,6 +47,7 @@ private fun ArticlesWithError(articles: List<ArticleUI>?) {
         Box(
             Modifier
                 .padding(8.dp)
+                .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.error),
             contentAlignment = Alignment.Center
         ) {
@@ -60,7 +62,7 @@ private fun ArticlesWithError(articles: List<ArticleUI>?) {
 @Composable
 private fun ArticlesDuringUpdate(articles: List<ArticleUI>?) {
     Column {
-        Box(Modifier.padding(8.dp), contentAlignment = Alignment.Center) {
+        Box(Modifier.padding(8.dp).fillMaxWidth(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
         if (articles != null) {
