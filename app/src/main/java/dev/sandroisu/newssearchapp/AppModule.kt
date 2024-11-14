@@ -7,7 +7,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.sandroisu.api.NewsApi
+import dev.sandroisu.common.AndroidLogcatLogger
 import dev.sandroisu.common.AppDispatchers
+import dev.sandroisu.common.Logger
 import dev.sandroisu.news.database.NewsDatabase
 import dev.sandroisu.news.database.newsDatabase
 import javax.inject.Singleton
@@ -34,6 +36,12 @@ object AppModule {
     @Singleton
     fun provideAppCoroutineDispatchers(): AppDispatchers {
         return AppDispatchers()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppLogger(): Logger {
+        return AndroidLogcatLogger()
     }
 
 

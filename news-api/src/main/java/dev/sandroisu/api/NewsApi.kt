@@ -24,7 +24,7 @@ interface NewsApi {
     /**
      *  API details [here](https://newsapi.org/docs/endpoints/everything)
      */
-    @GET("/everything")
+    @GET("everything")
     suspend fun everything(
         @Query("q") query: String? = null,
         @Query("from") from: Date? = null,
