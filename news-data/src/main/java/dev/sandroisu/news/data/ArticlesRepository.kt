@@ -25,16 +25,19 @@ class ArticlesRepository @Inject constructor(
     private val api: NewsApi,
     private val logger: Logger,
 ) {
-    fun getAll(mergeStrategy: MergeStrategy<RequestResult<List<Article>>> = RequestResultMergeStrategy()): Flow<RequestResult<List<Article>>> {
+    fun getAll(
+        query: String,
+        mergeStrategy: MergeStrategy<RequestResult<List<Article>>> = RequestResultMergeStrategy()
+    ): Flow<RequestResult<List<Article>>> {
         val cachedAllArticles: Flow<RequestResult<List<Article>>> = getAllFromDatabase()
 
-        val remoteArticles: Flow<RequestResult<List<Article>>> = getAllFromServer()
-        return cachedAllArticles.combine(remoteArticles) { dboObjects: RequestResult<List<Article>>, dtoObjects: RequestResult<List<Article>> ->
+        val remoteArticles: Flow<RequestResult<List<Article>>> = getAllFromServer(query)
+        return cachedAllArticles.combine(remoteArticles) {
+            dboObjects: RequestResult<List<Article>>, dtoObjects: RequestResult<List<Article>> ->
             mergeStrategy.merge(dboObjects, dtoObjects)
         }.flatMapLatest { result ->
             if (result is RequestResult.Success) {
-                database.articlesDao.observeAll()
-                    .map { dbos -> dbos.map { it.toArticle() } }
+                database.articlesDao.observeAll().map { dbos -> dbos.map { it.toArticle() } }
                     .map { RequestResult.Success(it) }
             } else {
                 flowOf(result)
@@ -43,33 +46,32 @@ class ArticlesRepository @Inject constructor(
     }
 
     private fun getAllFromDatabase(): Flow<RequestResult<List<Article>>> {
-        val dbRequest = flow { emit(database.articlesDao.getAll()) }
-            .map { RequestResult.Success(it) }
-            .catch {
-                RequestResult.Error<List<ArticleDBO>>(error = it)
-                logger.error(LOG_TAG, "Error ${it.message}")
-            }
+        val dbRequest =
+            flow { emit(database.articlesDao.getAll()) }.map { RequestResult.Success(it) }.catch {
+                    RequestResult.Error<List<ArticleDBO>>(error = it)
+                    logger.error(LOG_TAG, "Error ${it.message}")
+                }
         val start = flowOf<RequestResult<List<ArticleDBO>>>(RequestResult.InProgress())
         return merge(start, dbRequest).map { result ->
             result.map { dbos -> dbos.map { it.toArticle() } }
         }
     }
 
-    private fun getAllFromServer(): Flow<RequestResult<List<Article>>> {
-        val apiRequest = flow { emit(api.everything()) }
-            .onEach { result ->
+    private fun getAllFromServer(query: String): Flow<RequestResult<List<Article>>> {
+        val apiRequest = flow { emit(api.everything(query = query)) }.onEach { result ->
                 if (result.isSuccess) {
                     saveNetResponseToCache(result.getOrThrow().articles)
                 }
-            }
-            .onEach { result ->
-                if(result.isFailure){
+            }.onEach { result ->
+                if (result.isFailure) {
                     logger.error(LOG_TAG, "Error ${result.exceptionOrNull()?.message}")
                 }
             }.map { it.toRequestResult() }
         val start = flowOf<RequestResult<ResponseDTO<ArticleDTO>>>(RequestResult.InProgress())
-        return merge(apiRequest, start)
-            .map { result:RequestResult<ResponseDTO<ArticleDTO>>  -> result.map { response -> response.articles.map { it.toArticle() } }}
+        return merge(
+            apiRequest,
+            start
+        ).map { result: RequestResult<ResponseDTO<ArticleDTO>> -> result.map { response -> response.articles.map { it.toArticle() } } }
     }
 
     private suspend fun saveNetResponseToCache(data: List<ArticleDTO>) {
@@ -77,12 +79,12 @@ class ArticlesRepository @Inject constructor(
         database.articlesDao.insert(dbos)
     }
 
-    fun fetchLatest(): Flow<RequestResult<List<Article>>>{
+    fun fetchLatest(): Flow<RequestResult<List<Article>>> {
         TODO("Not yet implemented")
     }
 
     private companion object {
-        const val LOG_TAG="ArticleRepository"
+        const val LOG_TAG = "ArticleRepository"
     }
 
 }

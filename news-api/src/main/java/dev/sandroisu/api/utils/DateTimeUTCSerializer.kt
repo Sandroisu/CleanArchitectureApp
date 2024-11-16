@@ -10,6 +10,8 @@ import java.util.Date
 
 internal object DateTimeUTCSerializer : KSerializer<Date> {
 
+    private val formatter: DateFormat = DateFormat.getDateTimeInstance()
+
     override val descriptor = PrimitiveSerialDescriptor("Date", PrimitiveKind.STRING)
 
     override fun serialize(encoder: Encoder, value: Date) = encoder.encodeString(value.toString())
