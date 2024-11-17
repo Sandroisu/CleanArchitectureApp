@@ -20,10 +20,12 @@ internal class GetAllArticlesUseCase @Inject constructor(private val repository:
 }
 
 private fun DataArticle.toUiArticles(): ArticleUI {
-    return ArticleUI(id = id,
-        title = title,
-        description = description,
+    return ArticleUI(
+        id = cacheId,
+        title = title?: "No title",
+        description = description?: "No description",
         imageUrl = urlToImage,
-        url = url)
+        url = url?: "No url"
+    )
 }
 

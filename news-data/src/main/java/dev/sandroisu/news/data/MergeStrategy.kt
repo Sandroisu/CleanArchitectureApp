@@ -30,6 +30,11 @@ class RequestResultMergeStrategy<T: Any> : MergeStrategy<RequestResult<T>> {
                cache = cache,
                server = server,
            )
+
+           cache is RequestResult.Success && server is RequestResult.Success -> merge(
+               cache = cache,
+               server = server,
+           )
             else -> error("Unimplemented branch right = $cache left = $server")
         }
 
@@ -71,6 +76,13 @@ class RequestResultMergeStrategy<T: Any> : MergeStrategy<RequestResult<T>> {
         server: RequestResult.Error<T>
     ): RequestResult<T> {
         return RequestResult.Error(data = server.data?:cache.data, error = server.error)
+    }
+
+    private fun merge(
+        cache: RequestResult.Success<T>,
+        server: RequestResult.Success<T>
+    ): RequestResult<T> {
+        return RequestResult.Success(data = server.data)
     }
 
 }

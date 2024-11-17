@@ -40,7 +40,9 @@ fun NewsApi(
     baseUrl: String,
     apiKey: String,
     okHttpClient: OkHttpClient? = null,
-    json: Json = Json,
+    json: Json = Json{
+        coerceInputValues = true
+    },
 ): NewsApi {
     val retrofit =
         retrofit(baseUrl = baseUrl, apiKey = apiKey, okHttpClient = okHttpClient, json = json)
