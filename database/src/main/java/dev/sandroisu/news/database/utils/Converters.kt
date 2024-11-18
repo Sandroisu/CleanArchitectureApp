@@ -7,9 +7,14 @@ import java.util.Date
 internal class Converters {
     @TypeConverter
     fun fromTimestamp(value: String?): Date? {
-        return value?.let {
-            DateFormat.getDateTimeInstance().parse(it)
+        return try {
+            value?.let {
+                DateFormat.getDateTimeInstance().parse(it)
+            }
+        }catch (throwable: Throwable){
+            null
         }
+
     }
 
     @TypeConverter

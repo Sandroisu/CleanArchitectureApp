@@ -47,8 +47,10 @@ class ArticlesRepository @Inject constructor(
 
     private fun getAllFromDatabase(): Flow<RequestResult<List<Article>>> {
         val dbRequest =
-            flow { emit(database.articlesDao.getAll()) }.map { RequestResult.Success(it) }.catch {
-                    RequestResult.Error<List<ArticleDBO>>(error = it)
+            flow { emit(database.articlesDao.getAll()) }
+                .map<List<ArticleDBO>, RequestResult<List<ArticleDBO>>> { RequestResult.Success(it) }
+                .catch {
+                    emit(RequestResult.Error(error = it))
                     logger.error(LOG_TAG, "Error ${it.message}")
                 }
         val start = flowOf<RequestResult<List<ArticleDBO>>>(RequestResult.InProgress())

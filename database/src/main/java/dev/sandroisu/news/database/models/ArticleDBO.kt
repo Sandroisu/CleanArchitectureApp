@@ -9,18 +9,18 @@ import java.util.Date
 @Entity(tableName = "articles")
 data class ArticleDBO(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    @Embedded("source-") val sourceDBO: SourceDBO?,
-    @ColumnInfo("author") val author: String?,
-    @ColumnInfo("title") val title: String?,
-    @ColumnInfo("description") val description: String?,
-    @ColumnInfo("url") val url: String?,
+    @Embedded("source-") val sourceDBO: SourceDBO,
+    @ColumnInfo("author") val author: String,
+    @ColumnInfo("title") val title: String,
+    @ColumnInfo("description") val description: String,
+    @ColumnInfo("url") val url: String,
     @ColumnInfo("urlToImage") val urlToImage: String?,
-    @ColumnInfo("publishedAt") val publishedAt: Date?,
-    @ColumnInfo("content") val content: String?,
+    @ColumnInfo("publishedAt") val publishedAt: Date,
+    @ColumnInfo("content") val content: String,
 )
 
 @Entity
 data class SourceDBO(
-    @ColumnInfo("id") val id: String?,
-    @ColumnInfo("name") val name: String?,
+    @ColumnInfo("id") val id: String,
+    @ColumnInfo("name") val name: String,
 )
