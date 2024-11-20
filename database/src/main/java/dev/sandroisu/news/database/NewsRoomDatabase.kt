@@ -25,7 +25,7 @@ fun newsDatabase(applicationContext: Context): NewsDatabase {
         Room.databaseBuilder(
             checkNotNull(applicationContext.applicationContext),
             NewsRoomDatabase::class.java,
-            "news",
+            "news.db",
         ).build()
     return NewsDatabase(newsRoomDatabase)
 }

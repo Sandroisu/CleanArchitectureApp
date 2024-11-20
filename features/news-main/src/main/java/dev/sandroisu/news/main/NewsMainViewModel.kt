@@ -29,7 +29,7 @@ internal class NewsMainViewModel @Inject constructor(
 
 private fun RequestResult<List<ArticleUI>>.toState(): State {
     return when (this) {
-        is RequestResult.Error -> State.Error()
+        is RequestResult.Error -> State.Error(articlesUI = data)
         is RequestResult.InProgress -> State.Loading(articlesUI = data)
         is RequestResult.Success -> State.Success(articlesUI = checkNotNull(data))
     }

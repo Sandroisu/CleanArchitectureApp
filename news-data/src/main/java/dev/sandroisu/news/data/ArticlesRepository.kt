@@ -101,7 +101,7 @@ sealed class RequestResult<out E : Any>(open val data: E? = null) {
 fun <I : Any, O : Any> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
     return when (this) {
         is RequestResult.Success -> RequestResult.Success(mapper(data))
-        is RequestResult.Error -> RequestResult.Error()
+        is RequestResult.Error -> RequestResult.Error(data?.let(mapper))
         is RequestResult.InProgress -> RequestResult.InProgress(data?.let(mapper))
     }
 }

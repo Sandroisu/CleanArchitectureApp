@@ -15,7 +15,7 @@ internal fun ArticleDBO.toArticle(): Article {
         description = description,
         url = url,
         urlToImage = urlToImage,
-        publishedAt = publishedAt,
+        publishedAt = publishedAt?: Date(),
         content = content,
     )
 }
