@@ -72,7 +72,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.hilt.android)
-    implementation(libs.okhttp.logging)
     ksp(libs.hilt.compiler)
 
     implementation(project(":news-data"))
@@ -80,4 +79,6 @@ dependencies {
     implementation(project(":features:news-main"))
     implementation(project(":database"))
     implementation(project(":news-common"))
+
+    debugImplementation(libs.okhttp.logging)
 }
