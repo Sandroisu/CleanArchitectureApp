@@ -1,4 +1,4 @@
-package dev.sandroisu.newssearchapp.ui.theme
+package dev.sandroisu.news
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
