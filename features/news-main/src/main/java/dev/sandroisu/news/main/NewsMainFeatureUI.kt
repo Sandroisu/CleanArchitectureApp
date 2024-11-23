@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.sandroisu.news.data.RequestResult
 
 @Composable
 fun NewsMainScreen() {
@@ -33,11 +34,24 @@ fun NewsMainScreen() {
 @Composable
 internal fun NewsMainScreen(newsMainViewModel: NewsMainViewModel = viewModel()) {
     val state by newsMainViewModel.state.collectAsState()
-    when (val currentState = state) {
-        is State.Success -> Articles(currentState.articlesUI)
-        is State.Error -> ArticlesWithError(articles = currentState.articlesUI)
-        is State.Loading -> ArticlesDuringUpdate(articles = currentState.articlesUI)
-        State.None -> NewsEmpty()
+    val currentState = state
+    val articles: List<ArticleUI>?
+    Column {
+        if(currentState is State.Error) {
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.error)
+                    .padding(8.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "Error during update", color = MaterialTheme.colorScheme.onError)
+            }
+        }
+
+        if (currentState.articlesUI != null) {
+            Articles(articlesUI = currentState.articlesUI)
+        }
     }
 }
 
@@ -46,9 +60,9 @@ private fun ArticlesWithError(articles: List<ArticleUI>?) {
     Column {
         Box(
             Modifier
-                .padding(8.dp)
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.error),
+                .background(MaterialTheme.colorScheme.error)
+                .padding(8.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(text = "Error during update", color = MaterialTheme.colorScheme.onError)
