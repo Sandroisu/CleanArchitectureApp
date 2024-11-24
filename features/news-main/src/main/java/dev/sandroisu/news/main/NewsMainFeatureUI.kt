@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,7 +22,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.sandroisu.news.data.RequestResult
+import dev.sandroisu.news.NewsTheme
 
 @Composable
 fun NewsMainScreen() {
@@ -35,20 +34,20 @@ fun NewsMainScreen() {
 internal fun NewsMainScreen(newsMainViewModel: NewsMainViewModel = viewModel()) {
     val state by newsMainViewModel.state.collectAsState()
     val currentState = state
-    val articles: List<ArticleUI>?
-    Column {
-        if(currentState is State.Error) {
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.error)
-                    .padding(8.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "Error during update", color = MaterialTheme.colorScheme.onError)
-            }
-        }
+    if (currentState != State.None) {
+        NewsMainContent(currentState)
+    }
+}
 
+@Composable
+private fun NewsMainContent(currentState: State) {
+    Column {
+        if (currentState is State.Error) {
+            ErrorMessage(currentState)
+        }
+        if (currentState is State.Loading) {
+            ProgressIndicator(currentState)
+        }
         if (currentState.articlesUI != null) {
             Articles(articlesUI = currentState.articlesUI)
         }
@@ -56,39 +55,26 @@ internal fun NewsMainScreen(newsMainViewModel: NewsMainViewModel = viewModel()) 
 }
 
 @Composable
-private fun ArticlesWithError(articles: List<ArticleUI>?) {
-    Column {
-        Box(
-            Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.error)
-                .padding(8.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text = "Error during update", color = MaterialTheme.colorScheme.onError)
-        }
-        if (articles != null) {
-            Articles(articlesUI = articles)
-        }
+private fun ErrorMessage(state: State.Error) {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .background(NewsTheme.colorScheme.error)
+            .padding(8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "Error during update", color = NewsTheme.colorScheme.onError)
     }
 }
 
 @Composable
-private fun ArticlesDuringUpdate(articles: List<ArticleUI>?) {
-    Column {
-        Box(Modifier.padding(8.dp).fillMaxWidth(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
-        }
-        if (articles != null) {
-            Articles(articlesUI = articles)
-        }
-    }
-}
-
-@Composable
-private fun NewsEmpty() {
-    Box(contentAlignment = Alignment.Center) {
-        Text("No news")
+private fun ProgressIndicator(state: State.Loading) {
+    Box(
+        Modifier
+            .padding(8.dp)
+            .fillMaxWidth(), contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
     }
 }
 
@@ -110,13 +96,13 @@ private fun Article(@PreviewParameter(ArticleUIPreviewProvider::class) article: 
     Column(modifier = Modifier.padding(8.dp)) {
         Text(
             text = article.title,
-            style = MaterialTheme.typography.headlineMedium,
+            style = NewsTheme.typography.headlineMedium,
             maxLines = 1,
         )
         Spacer(modifier = Modifier.size(8.dp))
         Text(
             text = article.description,
-            style = MaterialTheme.typography.bodyMedium,
+            style = NewsTheme.typography.bodyMedium,
             maxLines = 3,
         )
     }
