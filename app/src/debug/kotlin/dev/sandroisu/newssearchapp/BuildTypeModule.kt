@@ -17,7 +17,7 @@ class BuildTypeModule {
     fun provideHttpClient(): OkHttpClient {
         val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-        OkHttpClient.Builder()
+        return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor(NewsApiKeyInterceptor(BuildConfig.NEWS_API_KEY))
             .build()
