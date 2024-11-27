@@ -3,10 +3,13 @@ package dev.sandroisu.news.main
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
@@ -18,6 +21,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -95,19 +100,30 @@ private fun Articles(@PreviewParameter(ArticlesUIPreviewProvider::class) article
 @Preview
 @Composable
 private fun Article(@PreviewParameter(ArticleUIPreviewProvider::class) article: ArticleUI) {
-    Column(modifier = Modifier.padding(8.dp)) {
-        AsyncImage(model = article.imageUrl, contentDescription = "Article image")
-        Text(
-            text = article.title,
-            style = NewsTheme.typography.headlineMedium,
-            maxLines = 1,
-        )
+    Row {
+        article.imageUrl?.let {
+            AsyncImage(
+                model = article.imageUrl,
+                contentDescription = stringResource(R.string.nmain_article_image),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.heightIn(150.dp).widthIn(150.dp)
+            )
+        }
         Spacer(modifier = Modifier.size(8.dp))
-        Text(
-            text = article.description,
-            style = NewsTheme.typography.bodyMedium,
-            maxLines = 3,
-        )
+        Column(modifier = Modifier.padding(8.dp)) {
+
+            Text(
+                text = article.title,
+                style = NewsTheme.typography.headlineMedium,
+                maxLines = 1,
+            )
+            Spacer(modifier = Modifier.size(8.dp))
+            Text(
+                text = article.description,
+                style = NewsTheme.typography.bodyMedium,
+                maxLines = 3,
+            )
+        }
     }
 }
 
