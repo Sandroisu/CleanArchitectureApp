@@ -3,6 +3,7 @@ package dev.sandroisu.news.main
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -100,13 +101,15 @@ private fun Articles(@PreviewParameter(ArticlesUIPreviewProvider::class) article
 @Preview
 @Composable
 private fun Article(@PreviewParameter(ArticleUIPreviewProvider::class) article: ArticleUI) {
-    Row {
+    Row(Modifier.padding(bottom = 4.dp)) {
         article.imageUrl?.let {
+            var isImageVisible = true
             AsyncImage(
                 model = article.imageUrl,
+                onError = {},
                 contentDescription = stringResource(R.string.nmain_article_image),
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.heightIn(150.dp).widthIn(150.dp)
+                modifier = Modifier.size(150.dp)
             )
         }
         Spacer(modifier = Modifier.size(8.dp))
