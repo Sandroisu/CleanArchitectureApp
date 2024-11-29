@@ -20,6 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -103,14 +106,16 @@ private fun Articles(@PreviewParameter(ArticlesUIPreviewProvider::class) article
 private fun Article(@PreviewParameter(ArticleUIPreviewProvider::class) article: ArticleUI) {
     Row(Modifier.padding(bottom = 4.dp)) {
         article.imageUrl?.let {
-            var isImageVisible = true
-            AsyncImage(
-                model = article.imageUrl,
-                onError = {},
-                contentDescription = stringResource(R.string.nmain_article_image),
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.size(150.dp)
-            )
+            var isImageVisible by remember { mutableStateOf(true) }
+            if (isImageVisible) {
+                AsyncImage(
+                    model = article.imageUrl,
+                    onError = { isImageVisible = false },
+                    contentDescription = stringResource(R.string.nmain_article_image),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(150.dp)
+                )
+            }
         }
         Spacer(modifier = Modifier.size(8.dp))
         Column(modifier = Modifier.padding(8.dp)) {
