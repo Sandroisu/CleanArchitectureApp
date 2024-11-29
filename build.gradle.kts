@@ -7,4 +7,9 @@ plugins {
     alias(libs.plugins.kotlinSerialization) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.dagger.hilt.android) apply false
+    alias(libs.plugins.detekt) apply false
+}
+
+allprojects.onEach {
+    project.plugins.apply(libs.plugins.detekt.get().pluginId)
 }
