@@ -10,6 +10,9 @@ plugins {
     alias(libs.plugins.detekt) apply false
 }
 
-allprojects.onEach {
-    project.plugins.apply(libs.plugins.detekt.get().pluginId)
+allprojects.onEach { project ->
+    if (project.plugins.hasPlugin(libs.plugins.jetbrainsKotlinAndroid.get().pluginId) ||
+        project.plugins.hasPlugin(libs.plugins.jetbrainsKotlinJvm.get().pluginId)) {
+        project.plugins.apply(libs.plugins.detekt.get().pluginId)
+    }
 }
