@@ -28,6 +28,7 @@ object AppModule {
             okHttpClient = okHttpClient
         )
     }
+
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): NewsDatabase {
@@ -45,6 +46,4 @@ object AppModule {
     fun provideAppLogger(): Logger {
         return AndroidLogcatLogger()
     }
-
-
 }

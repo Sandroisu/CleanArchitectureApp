@@ -40,7 +40,7 @@ fun NewsApi(
     baseUrl: String,
     apiKey: String,
     okHttpClient: OkHttpClient? = null,
-    json: Json = Json{
+    json: Json = Json {
         coerceInputValues = true
     },
 ): NewsApi {
@@ -55,7 +55,7 @@ private fun retrofit(
     okHttpClient: OkHttpClient?,
     json: Json,
 ): Retrofit {
-    val jsonConverterFactory = json.asConverterFactory("application/json".toMediaType() )
+    val jsonConverterFactory = json.asConverterFactory("application/json".toMediaType())
     val clientWithApi =
         (okHttpClient?.newBuilder() ?: OkHttpClient.Builder())
             .addInterceptor(NewsApiKeyInterceptor(apiKey = apiKey)).build()

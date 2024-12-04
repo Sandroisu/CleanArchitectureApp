@@ -6,43 +6,49 @@ interface MergeStrategy<E> {
 
 }
 
-class RequestResultMergeStrategy<T: Any> : MergeStrategy<RequestResult<T>> {
+class RequestResultMergeStrategy<T : Any> : MergeStrategy<RequestResult<T>> {
     override fun merge(cache: RequestResult<T>, server: RequestResult<T>): RequestResult<T> {
-       return when {
+        return when {
             cache is RequestResult.InProgress && server is RequestResult.InProgress -> merge(
                 cache = cache,
                 server = server,
             )
+
             cache is RequestResult.Success && server is RequestResult.InProgress -> merge(
                 cache = cache,
                 server = server,
             )
+
             cache is RequestResult.InProgress && server is RequestResult.Success -> merge(
                 cache = cache,
                 server = server,
             )
+
             cache is RequestResult.Success && server is RequestResult.Error -> merge(
                 cache = cache,
                 server = server,
             )
 
-           cache is RequestResult.InProgress && server is RequestResult.Error -> merge(
-               cache = cache,
-               server = server,
-           )
+            cache is RequestResult.InProgress && server is RequestResult.Error -> merge(
+                cache = cache,
+                server = server,
+            )
 
-           cache is RequestResult.Success && server is RequestResult.Success -> merge(
-               cache = cache,
-               server = server,
-           )
-           cache is RequestResult.Error && server is RequestResult.InProgress -> merge(
-               cache = cache,
-               server = server,
-           )
-           cache is RequestResult.Error && server is RequestResult.Success -> merge(
-               cache = cache,
-               server = server,
-           )
+            cache is RequestResult.Success && server is RequestResult.Success -> merge(
+                cache = cache,
+                server = server,
+            )
+
+            cache is RequestResult.Error && server is RequestResult.InProgress -> merge(
+                cache = cache,
+                server = server,
+            )
+
+            cache is RequestResult.Error && server is RequestResult.Success -> merge(
+                cache = cache,
+                server = server,
+            )
+
             else -> error("Unimplemented branch right = $cache left = $server")
         }
 
@@ -83,7 +89,7 @@ class RequestResultMergeStrategy<T: Any> : MergeStrategy<RequestResult<T>> {
         cache: RequestResult.InProgress<T>,
         server: RequestResult.Error<T>
     ): RequestResult<T> {
-        return RequestResult.Error(data = server.data?:cache.data, error = server.error)
+        return RequestResult.Error(data = server.data ?: cache.data, error = server.error)
     }
 
     private fun merge(

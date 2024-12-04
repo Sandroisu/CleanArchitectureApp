@@ -15,7 +15,7 @@ internal fun ArticleDBO.toArticle(): Article {
         description = description,
         url = url,
         urlToImage = urlToImage,
-        publishedAt = publishedAt?: Date(),
+        publishedAt = publishedAt ?: Date(),
         content = content,
     )
 }
@@ -24,7 +24,7 @@ internal fun ArticleDTO.toArticle(): Article {
     return Article(
         cacheId = -1,
         source = source.toSource(),
-        author = author?: "",
+        author = author ?: "",
         title = title,
         description = description,
         url = url,
@@ -37,7 +37,7 @@ internal fun ArticleDTO.toArticle(): Article {
 internal fun ArticleDTO.toArticleDbo(): ArticleDBO {
     return ArticleDBO(
         sourceDBO = source.toSourceDBO(),
-        author = author?: "",
+        author = author ?: "",
         title = title,
         description = description,
         url = url,
@@ -50,14 +50,14 @@ internal fun ArticleDTO.toArticleDbo(): ArticleDBO {
 
 private fun SourceDTO.toSource(): Source {
     return Source(
-        id = id?: name,
+        id = id ?: name,
         name = name,
     )
 }
 
 private fun SourceDTO.toSourceDBO(): SourceDBO {
     return SourceDBO(
-        id = id?: name,
+        id = id ?: name,
         name = name,
     )
 }

@@ -8,8 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
-import dev.sandroisu.news.main.NewsMainScreen
 import dev.sandroisu.news.NewsTheme
+import dev.sandroisu.news.main.NewsMainScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

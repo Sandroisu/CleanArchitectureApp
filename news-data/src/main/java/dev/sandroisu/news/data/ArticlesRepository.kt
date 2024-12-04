@@ -32,8 +32,7 @@ class ArticlesRepository @Inject constructor(
         val cachedAllArticles: Flow<RequestResult<List<Article>>> = getAllFromDatabase()
 
         val remoteArticles: Flow<RequestResult<List<Article>>> = getAllFromServer(query)
-        return cachedAllArticles.combine(remoteArticles) {
-            dboObjects: RequestResult<List<Article>>, dtoObjects: RequestResult<List<Article>> ->
+        return cachedAllArticles.combine(remoteArticles) { dboObjects: RequestResult<List<Article>>, dtoObjects: RequestResult<List<Article>> ->
             mergeStrategy.merge(dboObjects, dtoObjects)
         }.flatMapLatest { result ->
             if (result is RequestResult.Success) {
@@ -61,14 +60,14 @@ class ArticlesRepository @Inject constructor(
 
     private fun getAllFromServer(query: String): Flow<RequestResult<List<Article>>> {
         val apiRequest = flow { emit(api.everything(query = query)) }.onEach { result ->
-                if (result.isSuccess) {
-                    saveNetResponseToCache(result.getOrThrow().articles)
-                }
-            }.onEach { result ->
-                if (result.isFailure) {
-                    logger.error(LOG_TAG, "Error ${result.exceptionOrNull()?.message}")
-                }
-            }.map { it.toRequestResult() }
+            if (result.isSuccess) {
+                saveNetResponseToCache(result.getOrThrow().articles)
+            }
+        }.onEach { result ->
+            if (result.isFailure) {
+                logger.error(LOG_TAG, "Error ${result.exceptionOrNull()?.message}")
+            }
+        }.map { it.toRequestResult() }
         val start = flowOf<RequestResult<ResponseDTO<ArticleDTO>>>(RequestResult.InProgress())
         return merge(
             apiRequest,

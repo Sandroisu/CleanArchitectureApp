@@ -11,7 +11,7 @@ internal class Converters {
             value?.let {
                 DateFormat.getDateTimeInstance().parse(it)
             }
-        }catch (throwable: Throwable){
+        } catch (throwable: Throwable) {
             null
         }
 

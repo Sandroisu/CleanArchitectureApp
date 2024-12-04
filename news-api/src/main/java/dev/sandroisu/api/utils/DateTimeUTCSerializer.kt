@@ -16,7 +16,8 @@ internal object DateTimeUTCSerializer : KSerializer<Date> {
 
     override val descriptor = PrimitiveSerialDescriptor("Date", PrimitiveKind.STRING)
 
-    override fun serialize(encoder: Encoder, value: Date) = encoder.encodeString(formatter.format(value))
+    override fun serialize(encoder: Encoder, value: Date) =
+        encoder.encodeString(formatter.format(value))
 
     override fun deserialize(decoder: Decoder): Date = formatter.parse(decoder.decodeString())
 }
