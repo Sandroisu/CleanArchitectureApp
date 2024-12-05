@@ -2,6 +2,7 @@ package dev.sandroisu.news.database.utils
 
 import androidx.room.TypeConverter
 import java.text.DateFormat
+import java.text.ParseException
 import java.util.Date
 
 internal class Converters {
@@ -11,10 +12,9 @@ internal class Converters {
             value?.let {
                 DateFormat.getDateTimeInstance().parse(it)
             }
-        } catch (throwable: Throwable) {
+        } catch (throwable: ParseException) {
             null
         }
-
     }
 
     @TypeConverter
