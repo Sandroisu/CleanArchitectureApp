@@ -5,7 +5,6 @@ charset = utf-8
 end_of_line = lf
 indent_size = 4
 indent_style = space
-insert_final_newline = false
 max_line_length = 120
 tab_width = 4
 ij_continuation_indent_size = 8
@@ -17,6 +16,12 @@ ij_smart_tabs = false
 ij_wrap_on_typing = false
 
 [{*.kt,*.kts}]
+ktlint_code_style = ktlint_official
+ktlint_ignore_back_ticked_identifier = true
+ktlint_standard = enabled
+ktlint_experimental = enabled
+insert_final_newline = true
+
 ij_kotlin_align_in_columns_case_branch = false
 ij_kotlin_align_multiline_binary_operation = false
 ij_kotlin_align_multiline_extends_list = false
@@ -72,7 +77,7 @@ ij_kotlin_method_parameters_right_paren_on_new_line = true
 ij_kotlin_method_parameters_wrap = on_every_item
 ij_kotlin_name_count_to_use_star_import = 2147483647
 ij_kotlin_name_count_to_use_star_import_for_members = 2147483647
-ij_kotlin_packages_to_use_import_on_demand =
+ij_kotlin_packages_to_use_import_on_demand = on
 ij_kotlin_parameter_annotation_wrap = off
 ij_kotlin_space_after_comma = true
 ij_kotlin_space_after_extend_colon = true
