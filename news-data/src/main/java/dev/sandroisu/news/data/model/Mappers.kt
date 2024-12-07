@@ -45,7 +45,6 @@ internal fun ArticleDTO.toArticleDbo(): ArticleDBO {
         publishedAt = publishedAt,
         content = content,
     )
-
 }
 
 private fun SourceDTO.toSource(): Source {

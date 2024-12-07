@@ -32,16 +32,17 @@ class ArticlesRepository @Inject constructor(
         val cachedAllArticles: Flow<RequestResult<List<Article>>> = getAllFromDatabase()
 
         val remoteArticles: Flow<RequestResult<List<Article>>> = getAllFromServer(query)
-        return cachedAllArticles.combine(remoteArticles) { dboObjects: RequestResult<List<Article>>, dtoObjects: RequestResult<List<Article>> ->
-            mergeStrategy.merge(dboObjects, dtoObjects)
-        }.flatMapLatest { result ->
-            if (result is RequestResult.Success) {
-                database.articlesDao.observeAll().map { dbos -> dbos.map { it.toArticle() } }
-                    .map { RequestResult.Success(it) }
-            } else {
-                flowOf(result)
+        return cachedAllArticles
+            .combine(remoteArticles) { dbos: RequestResult<List<Article>>, dtos: RequestResult<List<Article>> ->
+                mergeStrategy.merge(dbos, dtos)
+            }.flatMapLatest { result ->
+                if (result is RequestResult.Success) {
+                    database.articlesDao.observeAll().map { dbos -> dbos.map { it.toArticle() } }
+                        .map { RequestResult.Success(it) }
+                } else {
+                    flowOf(result)
+                }
             }
-        }
     }
 
     private fun getAllFromDatabase(): Flow<RequestResult<List<Article>>> {
@@ -72,7 +73,9 @@ class ArticlesRepository @Inject constructor(
         return merge(
             apiRequest,
             start
-        ).map { result: RequestResult<ResponseDTO<ArticleDTO>> -> result.map { response -> response.articles.map { it.toArticle() } } }
+        ).map { result: RequestResult<ResponseDTO<ArticleDTO>> ->
+            result.map { response -> response.articles.map { it.toArticle() } }
+        }
     }
 
     private suspend fun saveNetResponseToCache(data: List<ArticleDTO>) {
@@ -87,7 +90,6 @@ class ArticlesRepository @Inject constructor(
     private companion object {
         const val LOG_TAG = "ArticleRepository"
     }
-
 }
 
 sealed class RequestResult<out E : Any>(open val data: E? = null) {

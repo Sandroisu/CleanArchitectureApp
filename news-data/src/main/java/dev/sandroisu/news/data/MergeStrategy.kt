@@ -3,10 +3,10 @@ package dev.sandroisu.news.data
 interface MergeStrategy<E> {
 
     fun merge(cache: E, server: E): E
-
 }
 
 class RequestResultMergeStrategy<T : Any> : MergeStrategy<RequestResult<T>> {
+    @Suppress("CyclomaticComplexMethod")
     override fun merge(cache: RequestResult<T>, server: RequestResult<T>): RequestResult<T> {
         return when {
             cache is RequestResult.InProgress && server is RequestResult.InProgress -> merge(
@@ -51,7 +51,6 @@ class RequestResultMergeStrategy<T : Any> : MergeStrategy<RequestResult<T>> {
 
             else -> error("Unimplemented branch right = $cache left = $server")
         }
-
     }
 
     private fun merge(
@@ -112,5 +111,4 @@ class RequestResultMergeStrategy<T : Any> : MergeStrategy<RequestResult<T>> {
     ): RequestResult<T> {
         return server
     }
-
 }
