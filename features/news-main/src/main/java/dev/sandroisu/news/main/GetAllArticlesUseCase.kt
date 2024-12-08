@@ -28,4 +28,3 @@ private fun DataArticle.toUiArticles(): ArticleUI {
         url = url
     )
 }
-

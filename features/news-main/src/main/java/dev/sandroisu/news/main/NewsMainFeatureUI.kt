@@ -36,7 +36,6 @@ fun NewsMainScreen() {
     NewsMainScreen(newsMainViewModel = viewModel())
 }
 
-
 @Composable
 internal fun NewsMainScreen(newsMainViewModel: NewsMainViewModel = viewModel()) {
     val state by newsMainViewModel.state.collectAsState()
@@ -68,7 +67,7 @@ private fun ErrorMessage(state: State.Error) {
             .fillMaxWidth()
             .background(NewsTheme.colorScheme.error)
             .padding(8.dp),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(text = "Error during update", color = NewsTheme.colorScheme.onError)
     }
@@ -79,7 +78,8 @@ private fun ProgressIndicator(state: State.Loading) {
     Box(
         Modifier
             .padding(8.dp)
-            .fillMaxWidth(), contentAlignment = Alignment.Center
+            .fillMaxWidth(),
+        contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator()
     }
@@ -109,13 +109,12 @@ private fun Article(@PreviewParameter(ArticleUIPreviewProvider::class) article: 
                     onError = { isImageVisible = false },
                     contentDescription = stringResource(R.string.nmain_article_image),
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.size(150.dp)
+                    modifier = Modifier.size(150.dp),
                 )
             }
         }
         Spacer(modifier = Modifier.size(8.dp))
         Column(modifier = Modifier.padding(8.dp)) {
-
             Text(
                 text = article.title,
                 style = NewsTheme.typography.headlineMedium,
@@ -131,7 +130,6 @@ private fun Article(@PreviewParameter(ArticleUIPreviewProvider::class) article: 
     }
 }
 
-
 private class ArticlesUIPreviewProvider : PreviewParameterProvider<List<ArticleUI>> {
     override val values: Sequence<List<ArticleUI>>
         get() = sequenceOf(
@@ -141,23 +139,23 @@ private class ArticlesUIPreviewProvider : PreviewParameterProvider<List<ArticleU
                     title = "Title",
                     description = "Here can be some long text",
                     imageUrl = "https://picsum.photos/seed/picsum/200/300",
-                    url = "https://www.lipsum.com/"
+                    url = "https://www.lipsum.com/",
                 ),
                 ArticleUI(
                     id = 2L,
                     title = "Title",
                     description = "Here can be some long text",
                     imageUrl = "https://picsum.photos/seed/picsum/200/300",
-                    url = "https://www.lipsum.com/"
+                    url = "https://www.lipsum.com/",
                 ),
                 ArticleUI(
                     id = 3L,
                     title = "Title",
                     description = "Here can be some long text",
                     imageUrl = "https://picsum.photos/seed/picsum/200/300",
-                    url = "https://www.lipsum.com/"
-                )
-            )
+                    url = "https://www.lipsum.com/",
+                ),
+            ),
         )
 }
 
@@ -169,22 +167,21 @@ private class ArticleUIPreviewProvider : PreviewParameterProvider<ArticleUI> {
                 title = "Title",
                 description = "Here can be some long text",
                 imageUrl = "https://picsum.photos/seed/picsum/200/300",
-                url = "https://www.lipsum.com/"
+                url = "https://www.lipsum.com/",
             ),
             ArticleUI(
                 id = 2L,
                 title = "Title",
                 description = "Here can be some long text",
                 imageUrl = "https://picsum.photos/seed/picsum/200/300",
-                url = "https://www.lipsum.com/"
+                url = "https://www.lipsum.com/",
             ),
             ArticleUI(
                 id = 3L,
                 title = "Title",
                 description = "Here can be some long text",
                 imageUrl = "https://picsum.photos/seed/picsum/200/300",
-                url = "https://www.lipsum.com/"
-            )
+                url = "https://www.lipsum.com/",
+            ),
         )
-
 }

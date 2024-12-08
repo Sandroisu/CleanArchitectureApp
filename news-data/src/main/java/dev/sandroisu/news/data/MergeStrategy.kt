@@ -1,3 +1,5 @@
+@file:Suppress("UnusedParameter")
+
 package dev.sandroisu.news.data
 
 interface MergeStrategy<E> {

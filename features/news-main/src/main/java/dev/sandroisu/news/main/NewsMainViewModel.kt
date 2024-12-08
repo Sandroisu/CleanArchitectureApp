@@ -24,9 +24,7 @@ internal class NewsMainViewModel @Inject constructor(
     fun forceUpdate() {
         TODO("Will make later")
     }
-
 }
-
 
 private fun RequestResult<List<ArticleUI>>.toState(): State {
     return when (this) {
