@@ -1,3 +1,5 @@
+@file:Suppress("UnusedParameter")
+
 package dev.sandroisu.news.main
 
 import androidx.compose.foundation.background
