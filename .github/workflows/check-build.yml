@@ -2,7 +2,16 @@ name: Code quality check
 run-name: Check code quality with linters
 on: [push]
 jobs:
-    Detekt:
+    Linters:
         runs-on: ubuntu-latest
         steps:
-            - run: .gradlew detekt
+            - uses: actions/checkout@v4
+            -  name: Set Up JDK
+               uses: actions/setup-java@v4
+               with:
+                 distribution: 'zulu'
+                 java-version: '17'
+                 cache: 'gradle'
+
+            - name: Detekt
+            - run: ./gradlew detekt
