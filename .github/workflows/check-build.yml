@@ -18,6 +18,9 @@ jobs:
               with:
                   cache-disabled: true
 
+            - name: Change wrapper permissions
+              run: chmod +x ./gradlew
+
             - name: Detekt
               shell: bash
               run: ./gradlew detekt
