@@ -5,13 +5,16 @@ jobs:
     Linters:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - name: Copy Sources
+            - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
             - name: Set Up JDK
               uses: actions/setup-java@v4
               with:
                  distribution: 'zulu'
                  java-version: '17'
-                 cache: 'gradle'
+            - uses: gradle/gradle-build-action@v3
+              with:
+                  cache-disabled: true
 
             - name: Detekt
               run: ./gradlew detekt
