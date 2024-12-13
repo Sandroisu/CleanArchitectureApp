@@ -24,3 +24,7 @@ jobs:
             - name: Detekt
               shell: bash
               run: ./gradlew detekt
+
+            - uses: jwgmeligmeyling/checkstyle-github-action@master
+              with:
+                 path: '**/checkstyle-result.xml'
