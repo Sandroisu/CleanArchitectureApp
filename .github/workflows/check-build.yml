@@ -28,3 +28,7 @@ jobs:
             - uses: jwgmeligmeyling/checkstyle-github-action@master
               with:
                  path: '**/checkstyle-result.xml'
+
+            - uses: jwgmeligmeyling/checkstyle-github-action@master
+              with:
+                  path: '**/checkstyle-result.xml'
