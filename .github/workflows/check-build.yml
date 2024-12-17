@@ -25,10 +25,7 @@ jobs:
               shell: bash
               run: ./gradlew detekt
 
-            - uses: jwgmeligmeyling/checkstyle-github-action@master
+            - name: Publish detekt reports
+              uses: jwgmeligmeyling/checkstyle-github-action@master
               with:
                  path: '**/checkstyle-result.xml'
-
-            - uses: jwgmeligmeyling/checkstyle-github-action@master
-              with:
-                  path: '**/checkstyle-result.xml'
