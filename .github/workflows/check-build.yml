@@ -28,4 +28,4 @@ jobs:
             - name: Publish detekt reports
               uses: jwgmeligmeyling/checkstyle-github-action@master
               with:
-                 path: '**/checkstyle-result.xml'
+                   path: '**/detekt.xml'
