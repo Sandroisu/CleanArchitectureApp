@@ -1,25 +1,22 @@
 name: Code quality check
-run-name: Check code quality with linters
+run-name: Check code quality with linter
 on: [push]
 jobs:
     Linters:
         runs-on: ubuntu-latest
         steps:
-            - name: Copy Sources
-              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+            - name: Checkout
+              uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-            - name: Set Up JDK
+            - name: set up JDK
               uses: actions/setup-java@v4
               with:
-                 distribution: 'temurin'
-                 java-version: '21'
+                  distribution: 'temurin'
+                  java-version: 17
 
             - uses: gradle/gradle-build-action@v3
               with:
                   cache-disabled: true
-
-            - name: Change wrapper permissions
-              run: chmod +x ./gradlew
 
             - name: Detekt
               shell: bash
@@ -28,4 +25,4 @@ jobs:
             - name: Publish detekt reports
               uses: jwgmeligmeyling/checkstyle-github-action@master
               with:
-                   path: '**/detekt.xml'
+                  path: '**/detekt.xml'
