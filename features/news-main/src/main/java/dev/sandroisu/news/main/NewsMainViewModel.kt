@@ -13,7 +13,7 @@ import javax.inject.Provider
 
 @HiltViewModel
 internal class NewsMainViewModel @Inject constructor(
-    getAllArticlesUseCase: Provider<GetAllArticlesUseCase>,
+   private val getAllArticlesUseCase: Provider<GetAllArticlesUseCase>,
 ) : ViewModel() {
     val state: StateFlow<State> = getAllArticlesUseCase.get().invoke(query = "android")
         .map { articles ->
@@ -22,7 +22,11 @@ internal class NewsMainViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Lazily, State.None)
 
     fun forceUpdate() {
-        TODO("Will make later")
+        getAllArticlesUseCase.get().invoke(query = "")
+            .map { articles ->
+                articles.toState()
+            }
+            .stateIn(viewModelScope, SharingStarted.Lazily, State.None)
     }
 }
 
