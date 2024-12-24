@@ -21,13 +21,7 @@ internal class NewsMainViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, State.None)
 
-    fun forceUpdate() {
-        getAllArticlesUseCase.get().invoke(query = "")
-            .map { articles ->
-                articles.toState()
-            }
-            .stateIn(viewModelScope, SharingStarted.Lazily, State.None)
-    }
+
 }
 
 private fun RequestResult<List<ArticleUI>>.toState(): State {
