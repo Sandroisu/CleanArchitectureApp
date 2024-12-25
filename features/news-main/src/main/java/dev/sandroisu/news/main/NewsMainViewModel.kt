@@ -15,7 +15,12 @@ import javax.inject.Provider
 internal class NewsMainViewModel @Inject constructor(
    private val getAllArticlesUseCase: Provider<GetAllArticlesUseCase>,
 ) : ViewModel() {
-    val state: StateFlow<State> = getAllArticlesUseCase.get().invoke(query = "android")
+
+    private companion object {
+        const val DEFAULT_QUERY = "android"
+    }
+
+    val state: StateFlow<State> = getAllArticlesUseCase.get().invoke(query = DEFAULT_QUERY)
         .map { articles ->
             articles.toState()
         }
