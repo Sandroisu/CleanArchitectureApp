@@ -56,6 +56,7 @@ android {
             excludes += "META-INF/androidx.*.version"
             excludes += "META-INF/com.google.*.version"
             excludes += "META-INF/kotlinx.*.version"
+            excludes += "kotlin-tooling-metadata.json"
         }
     }
 }
