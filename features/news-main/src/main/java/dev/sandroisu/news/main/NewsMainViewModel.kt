@@ -13,7 +13,7 @@ import javax.inject.Provider
 
 @HiltViewModel
 internal class NewsMainViewModel @Inject constructor(
-   private val getAllArticlesUseCase: Provider<GetAllArticlesUseCase>,
+    getAllArticlesUseCase: Provider<GetAllArticlesUseCase>,
 ) : ViewModel() {
 
     private companion object {
@@ -25,8 +25,6 @@ internal class NewsMainViewModel @Inject constructor(
             articles.toState()
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, State.None)
-
-
 }
 
 private fun RequestResult<List<ArticleUI>>.toState(): State {
