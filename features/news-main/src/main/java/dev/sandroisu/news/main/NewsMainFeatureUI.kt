@@ -71,7 +71,7 @@ private fun ErrorMessage(state: State.Error) {
             .padding(8.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(text = "Error during update", color = NewsTheme.colorScheme.onError)
+        Text(text = state.toString(), color = NewsTheme.colorScheme.onError)
     }
 }
 

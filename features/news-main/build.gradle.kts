@@ -6,6 +6,8 @@ plugins {
 }
 
 android {
+    resourcePrefix = "nmain"
+
     namespace = "dev.sandroisu.news.main"
     compileSdk = 34
 
