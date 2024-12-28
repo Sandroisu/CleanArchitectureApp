@@ -52,11 +52,13 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
             excludes += "/okhttp3/internal/publicsuffix/NOTICE"
-            excludes += "/kotlin"
+            excludes += "/kotlin/**"
             excludes += "META-INF/androidx.*.version"
             excludes += "META-INF/com.google.*.version"
-            excludes += "META-INF/kotlinx.*.version"
+            excludes += "META-INF/kotlinx_.*.version"
             excludes += "kotlin-tooling-metadata.json"
+            excludes += "DebugProbesKt.bin"
+            excludes += "META-INF/com/android/build/gradle/app-metadata.properties"
         }
     }
 }
