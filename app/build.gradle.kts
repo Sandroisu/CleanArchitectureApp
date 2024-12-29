@@ -23,7 +23,15 @@ android {
 
         buildConfigField("String", "NEWS_API_KEY", "\"9345bb5f947c4371b232d34605cd65b7\"")
         buildConfigField("String", "NEWS_API_BASE_URL", "\"https://newsapi.org/v2/\"")
+
+        resourceConfigurations += setOf("ru", "en")
+
+        ndk {
+            //noinspection ChromeOsAbiSupport
+            abiFilters += setOf("armeabi-v7a", "arm64-v8a")
+        }
     }
+
 
     buildTypes {
         release {
