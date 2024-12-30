@@ -13,18 +13,25 @@ import javax.inject.Provider
 
 @HiltViewModel
 internal class NewsMainViewModel @Inject constructor(
-    getAllArticlesUseCase: Provider<GetAllArticlesUseCase>,
+    private val getAllArticlesUseCase: Provider<GetAllArticlesUseCase>,
 ) : ViewModel() {
 
     private companion object {
         const val DEFAULT_QUERY = "android"
     }
 
-    val state: StateFlow<State> = getAllArticlesUseCase.get().invoke(query = DEFAULT_QUERY)
+    var state: StateFlow<State> = getAllArticlesUseCase.get().invoke(query = DEFAULT_QUERY)
         .map { articles ->
             articles.toState()
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, State.None)
+
+    fun reload(query: String) {
+        state = getAllArticlesUseCase.get().invoke(query = query)
+            .map {articles ->
+                articles.toState()
+            }
+            .stateIn(viewModelScope, SharingStarted.Lazily, State.None)
 }
 
 private fun RequestResult<List<ArticleUI>>.toState(): State {
