@@ -28,10 +28,11 @@ internal class NewsMainViewModel @Inject constructor(
 
     fun reload(query: String) {
         state = getAllArticlesUseCase.get().invoke(query = query)
-            .map {articles ->
+            .map { articles ->
                 articles.toState()
             }
             .stateIn(viewModelScope, SharingStarted.Lazily, State.None)
+    }
 }
 
 private fun RequestResult<List<ArticleUI>>.toState(): State {
