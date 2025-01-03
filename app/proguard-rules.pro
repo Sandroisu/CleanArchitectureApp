@@ -29,4 +29,5 @@
     public static void checkReturnedValueIsNotNull(...);
     public static void checkNotNullExpressionValue(...);
     public static void checkExpressionValueIsNotNull(...);
+    public static void throwUndefinedForReified(...);
 }
