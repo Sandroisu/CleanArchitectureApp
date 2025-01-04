@@ -31,3 +31,5 @@
     public static void checkExpressionValueIsNotNull(...);
     public static void throwUndefinedForReified(...);
 }
+
+-keep public class dev.sandroisu.api.models.*
