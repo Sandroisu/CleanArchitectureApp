@@ -32,9 +32,18 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = File(rootDir, "newsapp.keystore")
+            keyPassword = "123456"
+            keyAlias = "sandroisu"
+            storePassword = "123456"
+        }
+    }
 
     buildTypes {
         release {
+            signingConfig = signingConfigs["release"]
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
