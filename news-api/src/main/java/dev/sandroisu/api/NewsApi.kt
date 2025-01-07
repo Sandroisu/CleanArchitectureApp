@@ -1,7 +1,6 @@
 package dev.sandroisu.api
 
 import androidx.annotation.IntRange
-import androidx.annotation.Keep
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.skydoves.retrofit.adapters.result.ResultCallAdapterFactory
 import dev.sandroisu.api.models.ArticleDTO
@@ -21,7 +20,6 @@ import java.util.Date
 /**
  * API Documentation [here](https://newsapi.org/docs)
  */
-@Keep
 interface NewsApi {
     /**
      *  API details [here](https://newsapi.org/docs/endpoints/everything)

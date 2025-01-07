@@ -33,3 +33,4 @@
 }
 
 -keep public class dev.sandroisu.api.models.*
+-keep public class kotlin.Result { *; }
