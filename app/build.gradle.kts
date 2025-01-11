@@ -105,4 +105,5 @@ dependencies {
     implementation(project(":news-uikit"))
 
     debugImplementation(libs.okhttp.logging)
+    baselineProfile(project(":baselineprofile"))
 }
