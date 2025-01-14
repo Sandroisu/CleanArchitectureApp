@@ -35,12 +35,12 @@ private fun RequestResult<List<ArticleUI>>.toState(): State {
     }
 }
 
-internal sealed class State(val articlesUI: List<ArticleUI>?) {
+internal sealed class State(open val articlesUI: List<ArticleUI>?) {
     data object None : State(null)
 
     class Loading(articlesUI: List<ArticleUI>? = null) : State(articlesUI)
 
     class Error(articlesUI: List<ArticleUI>? = null) : State(articlesUI)
 
-    class Success(articlesUI: List<ArticleUI>) : State(articlesUI)
+    class Success(override val articlesUI: List<ArticleUI>) : State(articlesUI)
 }

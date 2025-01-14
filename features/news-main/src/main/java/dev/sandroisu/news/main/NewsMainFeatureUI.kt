@@ -34,30 +34,30 @@ import coil3.compose.AsyncImage
 import dev.sandroisu.news.NewsTheme
 
 @Composable
-fun NewsMainScreen() {
-    NewsMainScreen(newsMainViewModel = viewModel())
+fun NewsMainScreen(modifier: Modifier = Modifier) {
+    NewsMainScreen(newsMainViewModel = viewModel(), modifier = modifier)
 }
 
 @Composable
-internal fun NewsMainScreen(newsMainViewModel: NewsMainViewModel = viewModel()) {
+internal fun NewsMainScreen(
+    newsMainViewModel: NewsMainViewModel = viewModel(),
+    modifier: Modifier = Modifier,
+) {
     val state by newsMainViewModel.state.collectAsState()
     val currentState = state
     if (currentState != State.None) {
-        NewsMainContent(currentState)
+        NewsMainContent(currentState, modifier = modifier)
     }
 }
 
 @Composable
-private fun NewsMainContent(currentState: State) {
-    Column {
-        if (currentState is State.Error) {
-            ErrorMessage(currentState)
-        }
-        if (currentState is State.Loading) {
-            ProgressIndicator(currentState)
-        }
-        if (currentState.articlesUI != null) {
-            Articles(articlesUI = currentState.articlesUI)
+private fun NewsMainContent(currentState: State, modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
+        when (currentState) {
+            is State.Error -> ErrorMessage(currentState)
+            is State.Loading -> ProgressIndicator(currentState)
+            is State.Success -> Articles(articlesState = currentState)
+            State.None -> Unit
         }
     }
 }
@@ -87,11 +87,18 @@ private fun ProgressIndicator(state: State.Loading) {
     }
 }
 
+@Composable
+private fun Articles(articlesState: State.Success) {
+    ArticleList(articlesUi = articlesState.articlesUI)
+}
+
 @Preview
 @Composable
-private fun Articles(@PreviewParameter(ArticlesUIPreviewProvider::class) articlesUI: List<ArticleUI>) {
+private fun ArticleList(
+    @PreviewParameter(ArticlesUIPreviewProvider::class) articlesUi: List<ArticleUI>
+) {
     LazyColumn {
-        items(articlesUI) { article ->
+        items(articlesUi) { article ->
             key(article.id) {
                 Article(article)
             }
