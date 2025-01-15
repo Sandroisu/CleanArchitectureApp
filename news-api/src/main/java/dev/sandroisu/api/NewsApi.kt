@@ -68,7 +68,12 @@ private fun retrofit(
         .build()
 }
 
-fun longestPalindrome(s: String): String {
+fun convert(s: String, numRows: Int): String {
+    val map = mutableMapOf<Int, MutableList<Char>>()
+    for (i in 1 until numRows) {
+        map[i] = mutableListOf()
+    }
+
     val chars = s.toCharArray()
     var maxPolindrome = ""
     for (i in chars.indices) {
