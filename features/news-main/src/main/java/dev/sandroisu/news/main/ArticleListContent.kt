@@ -32,7 +32,7 @@ internal fun Articles(articlesState: State.Success) {
 
 @Preview
 @Composable
-private fun ArticleList(
+internal fun ArticleList(
     @PreviewParameter(ArticlesUIPreviewProvider::class) articlesUi: List<ArticleUI>
 ) {
     LazyColumn {

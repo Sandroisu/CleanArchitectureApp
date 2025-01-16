@@ -70,21 +70,22 @@ private fun retrofit(
 
 fun convert(s: String, numRows: Int): String {
     val map = mutableMapOf<Int, MutableList<Char>>()
-    for (i in 1 until numRows) {
+    for (i in 0 until numRows) {
         map[i] = mutableListOf()
     }
-
     val chars = s.toCharArray()
-    var maxPolindrome = ""
     for (i in chars.indices) {
-        if (i == 0 || i == chars.size) {
-            continue
-        }
-        val newString = isPolindrome(chars, i)
-        if (maxPolindrome.length < newString.length) {
-            maxPolindrome = newString
+        val multiplier = i/numRows
+        val offset = i - multiplier*numRows
+        map[offset]?.add(chars[i])
+    }
+    var maxPolindrome = ""
+    for (i in 0 until numRows) {
+        map[i]?.forEach {
+            maxPolindrome += it
         }
     }
+
     return maxPolindrome
 }
 

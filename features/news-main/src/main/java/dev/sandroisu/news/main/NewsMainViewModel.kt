@@ -1,5 +1,7 @@
 package dev.sandroisu.news.main
 
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,12 +37,17 @@ private fun RequestResult<List<ArticleUI>>.toState(): State {
     }
 }
 
+@Stable
 internal sealed class State(open val articlesUI: List<ArticleUI>?) {
+    @Immutable
     data object None : State(null)
 
+    @Stable
     class Loading(articlesUI: List<ArticleUI>? = null) : State(articlesUI)
 
+    @Stable
     class Error(articlesUI: List<ArticleUI>? = null) : State(articlesUI)
 
+    @Stable
     class Success(override val articlesUI: List<ArticleUI>) : State(articlesUI)
 }

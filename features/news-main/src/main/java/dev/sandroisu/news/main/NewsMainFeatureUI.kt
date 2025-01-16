@@ -60,20 +60,26 @@ private fun ErrorMessage(state: State.Error) {
         }
         val articles = state.articlesUI
         if (articles != null) {
-
+            ArticleList(articlesUi = articles)
         }
     }
 }
 
 @Composable
 private fun ProgressIndicator(state: State.Loading) {
-    Box(
-        Modifier
-            .padding(8.dp)
-            .fillMaxWidth(),
-        contentAlignment = Alignment.Center,
-    ) {
-        CircularProgressIndicator()
+    Column {
+        Box(
+            Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator()
+        }
+        val articles = state.articlesUI
+        if (articles != null) {
+            ArticleList(articlesUi = articles)
+        }
     }
 }
 

@@ -27,6 +27,9 @@ uiautomator = "2.2.0"
 benchmarkMacroJunit4 = "1.2.4"
 baselineprofile = "1.2.4"
 profileinstaller = "1.3.1"
+androidsdk-target = "33"
+androidsdk-min = "24"
+androidsdk-compile = "34"
 
 [libraries]
 android-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
