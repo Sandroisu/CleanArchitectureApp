@@ -20,12 +20,12 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
-class ArticlesRepository @Inject constructor(
+public class ArticlesRepository @Inject constructor(
     private val database: NewsDatabase,
     private val api: NewsApi,
     private val logger: Logger,
 ) {
-    fun getAll(
+    public fun getAll(
         query: String,
         mergeStrategy: MergeStrategy<RequestResult<List<Article>>> = RequestResultMergeStrategy()
     ): Flow<RequestResult<List<Article>>> {
@@ -72,7 +72,7 @@ class ArticlesRepository @Inject constructor(
         val start = flowOf<RequestResult<ResponseDTO<ArticleDTO>>>(RequestResult.InProgress())
         return merge(
             apiRequest,
-            start
+            start,
         ).map { result: RequestResult<ResponseDTO<ArticleDTO>> ->
             result.map { response -> response.articles.map { it.toArticle() } }
         }
@@ -83,7 +83,7 @@ class ArticlesRepository @Inject constructor(
         database.articlesDao.insert(dbos)
     }
 
-    fun fetchLatest(): Flow<RequestResult<List<Article>>> {
+    public fun fetchLatest(): Flow<RequestResult<List<Article>>> {
         TODO("Not yet implemented")
     }
 
@@ -92,14 +92,16 @@ class ArticlesRepository @Inject constructor(
     }
 }
 
-sealed class RequestResult<out E : Any>(open val data: E? = null) {
-    class InProgress<E : Any>(data: E? = null) : RequestResult<E>(data)
-
-    class Success<E : Any>(override val data: E) : RequestResult<E>(data)
-    class Error<E : Any>(data: E? = null, val error: Throwable? = null) : RequestResult<E>(data)
+public sealed class RequestResult<out E : Any>(public open val data: E? = null) {
+    public class InProgress<E : Any>(data: E? = null) : RequestResult<E>(data)
+    public class Success<E : Any>(override val data: E) : RequestResult<E>(data)
+    public class Error<E : Any>(
+        data: E? = null,
+        public val error: Throwable? = null,
+    ) : RequestResult<E>(data)
 }
 
-fun <I : Any, O : Any> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
+public fun <I : Any, O : Any> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
     return when (this) {
         is RequestResult.Success -> RequestResult.Success(mapper(data))
         is RequestResult.Error -> RequestResult.Error(data?.let(mapper))

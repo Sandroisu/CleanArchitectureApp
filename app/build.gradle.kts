@@ -8,12 +8,13 @@ plugins {
 
 android {
     namespace = "dev.sandroisu.newssearchapp"
-    compileSdk = 34
+    compileSdk = libs.versions.androidsdk.compile.get().toInt()
 
     defaultConfig {
+        minSdk = libs.versions.androidsdk.min.get().toInt()
+
+        targetSdk = libs.versions.androidsdk.target.get().toInt()
         applicationId = "dev.sandroisu.newssearchapp"
-        minSdk = 24
-        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 

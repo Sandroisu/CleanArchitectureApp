@@ -1,6 +1,12 @@
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+}
+
+kotlin {
+    explicitApi = ExplicitApiMode.Strict
 }
 
 android {

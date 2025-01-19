@@ -2,12 +2,12 @@
 
 package dev.sandroisu.news.data
 
-interface MergeStrategy<E> {
+public interface MergeStrategy<E> {
 
-    fun merge(cache: E, server: E): E
+    public fun merge(cache: E, server: E): E
 }
 
-class RequestResultMergeStrategy<T : Any> : MergeStrategy<RequestResult<T>> {
+public class RequestResultMergeStrategy<T : Any> : MergeStrategy<RequestResult<T>> {
     @Suppress("CyclomaticComplexMethod")
     override fun merge(cache: RequestResult<T>, server: RequestResult<T>): RequestResult<T> {
         return when {
@@ -57,7 +57,7 @@ class RequestResultMergeStrategy<T : Any> : MergeStrategy<RequestResult<T>> {
 
     private fun merge(
         cache: RequestResult.InProgress<T>,
-        server: RequestResult.InProgress<T>
+        server: RequestResult.InProgress<T>,
     ): RequestResult<T> {
         return when {
             (server.data != null) -> RequestResult.InProgress(data = server.data)
@@ -67,49 +67,49 @@ class RequestResultMergeStrategy<T : Any> : MergeStrategy<RequestResult<T>> {
 
     private fun merge(
         cache: RequestResult.Success<T>,
-        server: RequestResult.InProgress<T>
+        server: RequestResult.InProgress<T>,
     ): RequestResult<T> {
         return RequestResult.InProgress(cache.data)
     }
 
     private fun merge(
         cache: RequestResult.InProgress<T>,
-        server: RequestResult.Success<T>
+        server: RequestResult.Success<T>,
     ): RequestResult<T> {
         return RequestResult.InProgress(server.data)
     }
 
     private fun merge(
         cache: RequestResult.Success<T>,
-        server: RequestResult.Error<T>
+        server: RequestResult.Error<T>,
     ): RequestResult<T> {
         return RequestResult.Error(cache.data, server.error)
     }
 
     private fun merge(
         cache: RequestResult.InProgress<T>,
-        server: RequestResult.Error<T>
+        server: RequestResult.Error<T>,
     ): RequestResult<T> {
         return RequestResult.Error(data = server.data ?: cache.data, error = server.error)
     }
 
     private fun merge(
         cache: RequestResult.Success<T>,
-        server: RequestResult.Success<T>
+        server: RequestResult.Success<T>,
     ): RequestResult<T> {
         return RequestResult.Success(data = server.data)
     }
 
     private fun merge(
         cache: RequestResult.Error<T>,
-        server: RequestResult.InProgress<T>
+        server: RequestResult.InProgress<T>,
     ): RequestResult<T> {
         return server
     }
 
     private fun merge(
         cache: RequestResult.Error<T>,
-        server: RequestResult.Success<T>
+        server: RequestResult.Success<T>,
     ): RequestResult<T> {
         return server
     }

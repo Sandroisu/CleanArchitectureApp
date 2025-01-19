@@ -2,7 +2,7 @@ package dev.sandroisu.news.data.model
 
 import java.util.Date
 
-data class Article(
+public data class Article(
     val cacheId: Long,
     val source: Source,
     val author: String,
@@ -14,7 +14,7 @@ data class Article(
     val content: String,
 )
 
-data class Source(
+public data class Source(
     val id: String,
     val name: String?,
 )
