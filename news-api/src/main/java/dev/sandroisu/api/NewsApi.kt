@@ -70,14 +70,49 @@ private fun retrofit(
 
 fun convert(s: String, numRows: Int): String {
     val map = mutableMapOf<Int, MutableList<Char>>()
+    val spacingSize = numRows - 2
     for (i in 0 until numRows) {
         map[i] = mutableListOf()
     }
+    val arrayOfDesigion = mutableListOf<Int>()
     val chars = s.toCharArray()
+    var offsetting = 0
+    var offsettMultiplier = 0
+    chars.forEachIndexed { index, c ->
+        val orderNumber = index + 1 + offsettMultiplier*spacingSize
+        if (offsetting!=0){
+            if(offsetting == index){
+                offsetting = 0
+            }
+        }else if (orderNumber%numRows == 0) {
+            arrayOfDesigion.add(index)
+            offsetting = index + spacingSize
+            offsettMultiplier++
+        }
+    }
+    print(arrayOfDesigion.toString())
+    var fixing = false
+    var zRow = 0
     for (i in chars.indices) {
+
         val multiplier = i/numRows
-        val offset = i - multiplier*numRows
-        map[offset]?.add(chars[i])
+        val row = i - multiplier*numRows
+
+        if(fixing){
+            if (zRow == 0){
+                fixing = false
+                map[row]?.add(chars[i])
+            } else {
+                map[zRow]?.add(chars[i])
+                zRow--
+            }
+        } else {
+            map[row]?.add(chars[i])
+        }
+        if(arrayOfDesigion.contains(i)) {
+            fixing = true
+            zRow = row-1
+        }
     }
     var maxPolindrome = ""
     for (i in 0 until numRows) {
@@ -85,6 +120,6 @@ fun convert(s: String, numRows: Int): String {
             maxPolindrome += it
         }
     }
-
+    print(maxPolindrome)
     return maxPolindrome
 }
