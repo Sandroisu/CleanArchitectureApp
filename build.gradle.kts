@@ -15,6 +15,7 @@ plugins {
 }
 
 val property = project.properties.get("keyPath")
+println("keyPATH = $property")
 
 //TODO: Replace detekt gradle plugin with terminal launch
 allprojects.onEach { project ->

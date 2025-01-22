@@ -123,3 +123,18 @@ fun convert(s: String, numRows: Int): String {
     print(maxPolindrome)
     return maxPolindrome
 }
+
+fun reverse(x: Int): Int {
+    val lengthOfDigit = x.toString().length
+    var digitCopy = x
+    val sb = StringBuilder()
+    for (i in lengthOfDigit downTo 0){
+
+        val remainder = digitCopy%10
+        sb.append(remainder)
+        digitCopy = (digitCopy - remainder)/10
+    }
+    sb.deleteAt(lengthOfDigit-1)
+    Int.MAX_VALUE
+    return sb.toString().toInt()
+}
