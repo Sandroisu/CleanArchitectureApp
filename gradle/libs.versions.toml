@@ -10,7 +10,7 @@ espressoCore = "3.5.1"
 androidxLifecycle = "2.7.0"
 activityCompose = "1.8.2"
 composeBom = "2024.04.00"
-retrofit = "2.9.0"
+retrofit = "2.11.0"
 kotlinx-coroutines = "1.8.0"
 kotlinx-serialization-json = "1.6.3"
 retrofitAdaptersResult = "1.0.9"
@@ -62,6 +62,7 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 retrofit-adapters-result = { module = "com.github.skydoves:retrofit-adapters-result", version.ref = "retrofitAdaptersResult" }
 retrofit-converter-kotlinx-serialization = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofitConverterKotlinxSerialization" }
+retrofit-response-type-keeper= { module = "com.squareup.retrofit2:response-type-keeper", version.ref = "retrofit" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }

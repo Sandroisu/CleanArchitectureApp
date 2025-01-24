@@ -14,10 +14,6 @@ plugins {
     alias(libs.plugins.baselineprofile) apply false
 }
 
-ext{
-    set("keyPath", rootProject.property("keyPath"))
-}
-
 //TODO: Replace detekt gradle plugin with terminal launch
 allprojects.onEach { project ->
     project.afterEvaluate {

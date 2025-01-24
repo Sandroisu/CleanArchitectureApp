@@ -79,12 +79,12 @@ fun convert(s: String, numRows: Int): String {
     var offsetting = 0
     var offsettMultiplier = 0
     chars.forEachIndexed { index, c ->
-        val orderNumber = index + 1 + offsettMultiplier*spacingSize
-        if (offsetting!=0){
-            if(offsetting == index){
+        val orderNumber = index + 1 + offsettMultiplier * spacingSize
+        if (offsetting != 0) {
+            if (offsetting == index) {
                 offsetting = 0
             }
-        }else if (orderNumber%numRows == 0) {
+        } else if (orderNumber % numRows == 0) {
             arrayOfDesigion.add(index)
             offsetting = index + spacingSize
             offsettMultiplier++
@@ -94,12 +94,11 @@ fun convert(s: String, numRows: Int): String {
     var fixing = false
     var zRow = 0
     for (i in chars.indices) {
+        val multiplier = i / numRows
+        val row = i - multiplier * numRows
 
-        val multiplier = i/numRows
-        val row = i - multiplier*numRows
-
-        if(fixing){
-            if (zRow == 0){
+        if (fixing) {
+            if (zRow == 0) {
                 fixing = false
                 map[row]?.add(chars[i])
             } else {
@@ -109,9 +108,9 @@ fun convert(s: String, numRows: Int): String {
         } else {
             map[row]?.add(chars[i])
         }
-        if(arrayOfDesigion.contains(i)) {
+        if (arrayOfDesigion.contains(i)) {
             fixing = true
-            zRow = row-1
+            zRow = row - 1
         }
     }
     var maxPolindrome = ""
@@ -124,17 +123,17 @@ fun convert(s: String, numRows: Int): String {
     return maxPolindrome
 }
 
+@Suppress("MagicNumber")
 fun reverse(x: Int): Int {
     val lengthOfDigit = x.toString().length
     var digitCopy = x
     val sb = StringBuilder()
-    for (i in lengthOfDigit downTo 0){
-
-        val remainder = digitCopy%10
+    for (i in lengthOfDigit downTo 0) {
+        val remainder = digitCopy % 10
         sb.append(remainder)
-        digitCopy = (digitCopy - remainder)/10
+        digitCopy = (digitCopy - remainder) / 10
     }
-    sb.deleteAt(lengthOfDigit-1)
+    sb.deleteAt(lengthOfDigit - 1)
     Int.MAX_VALUE
     return sb.toString().toInt()
 }

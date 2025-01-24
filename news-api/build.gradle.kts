@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.jetbrainsKotlinJvm)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.ksp)
 }
 
 java {
@@ -24,4 +25,5 @@ dependencies {
     implementation(libs.retrofit.converter.kotlinx.serialization)
     implementation(libs.retrofit.adapters.result)
     api(libs.okhttp)
+    ksp(libs.retrofit.response.type.keeper)
 }
