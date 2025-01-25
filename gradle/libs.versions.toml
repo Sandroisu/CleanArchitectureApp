@@ -3,7 +3,7 @@ annotation = "1.7.1"
 coilCompose = "3.0.4"
 coreKtx = "1.12.0"
 agp = "8.3.2"
-kotlin = "1.9.23"
+kotlin = "2.1.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
@@ -18,7 +18,8 @@ retrofitConverterKotlinxSerialization = "1.0.0"
 appcompat = "1.6.1"
 material = "1.11.0"
 room = "2.6.1"
-ksp = "1.9.23-1.0.20"
+ksp = "2.1.0-1.0.29"
+kapt = "2.1.0"
 dagger = "2.50"
 javax-inject = "1"
 okhttp = "4.12.0"
@@ -85,6 +86,7 @@ jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "k
 jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kapt" }
 dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektVersion" }
 android-test = { id = "com.android.test", version.ref = "agp" }
