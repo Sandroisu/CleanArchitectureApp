@@ -50,9 +50,7 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
             )
-            proguardFiles(
-                file("proguard/")
-            )
+            proguardFile(file("proguard/"))
         }
     }
     compileOptions {
@@ -96,16 +94,14 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     implementation(libs.hilt.android)
-    "baselineProfile"(project(":baselineprofile"))
     ksp(libs.hilt.compiler)
-
-    implementation(project(":news-data"))
-    implementation(project(":news-api"))
-    implementation(project(":features:news-main"))
-    implementation(project(":database"))
-    implementation(project(":news-common"))
-    implementation(project(":news-uikit"))
+    implementation(projects.newsApi)
+    implementation(projects.newsData)
+    implementation(projects.features.newsMain)
+    implementation(projects.database)
+    implementation(projects.newsCommon)
+    implementation(projects.newsUikit)
 
     debugImplementation(libs.okhttp.logging)
-    baselineProfile(project(":baselineprofile"))
+    baselineProfile(projects.baselineprofile)
 }
