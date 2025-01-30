@@ -61,6 +61,6 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
-    implementation(project(":news-data"))
-    implementation(project(":news-uikit"))
+    implementation(projects.features.newsMain.domain)
+    implementation(projects.newsUikit)
 }
