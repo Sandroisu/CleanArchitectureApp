@@ -1,6 +1,6 @@
 package dev.sandroisu.news.main
 
-data class ArticleUI(
+public data class ArticleUI(
     val id: Long,
     val title: String,
     val description: String,

@@ -25,6 +25,6 @@ private fun DataArticle.toUiArticles(): ArticleUI {
         title = title,
         description = description,
         imageUrl = urlToImage,
-        url = url
+        url = url,
     )
 }

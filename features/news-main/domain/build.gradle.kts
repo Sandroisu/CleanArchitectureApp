@@ -1,8 +1,14 @@
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.ksp)
+}
+
+kotlin {
+    explicitApi = ExplicitApiMode.Strict
 }
 
 android {
@@ -14,7 +20,6 @@ android {
     defaultConfig {
         minSdk = libs.versions.androidsdk.min.get().toInt()
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -44,7 +49,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-
-    implementation(project(":news-data"))
-    implementation(project(":news-uikit"))
+    compileOnly(libs.androidx.compose.runtime)
+    api(project(":news-data"))
 }
