@@ -1,11 +1,11 @@
 package dev.sandroisu.news.main
 
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.sandroisu.news.data.RequestResult
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -31,23 +31,23 @@ public class NewsMainViewModel @Inject internal constructor(
 
 private fun RequestResult<List<ArticleUI>>.toState(): State {
     return when (this) {
-        is RequestResult.Error -> State.Error(articlesUI = data)
-        is RequestResult.InProgress -> State.Loading(articlesUI = data)
-        is RequestResult.Success -> State.Success(articlesUI = checkNotNull(data))
+        is RequestResult.Error -> State.Error(articlesUI = data?.toImmutableList())
+        is RequestResult.InProgress -> State.Loading(articlesUI = data?.toImmutableList())
+        is RequestResult.Success -> State.Success(articlesUI = data.toImmutableList())
     }
 }
 
-@Stable
-public sealed class State(public open val articlesUI: List<ArticleUI>?) {
-    @Immutable
+
+public sealed class State(public open val articlesUI: ImmutableList<ArticleUI>?) {
+
     public data object None : State(null)
 
-    @Stable
-    public class Loading(articlesUI: List<ArticleUI>? = null) : State(articlesUI)
 
-    @Stable
-    public class Error(articlesUI: List<ArticleUI>? = null) : State(articlesUI)
+    public class Loading(articlesUI: ImmutableList<ArticleUI>? = null) : State(articlesUI)
 
-    @Stable
-    public class Success(override val articlesUI: List<ArticleUI>) : State(articlesUI)
+
+    public class Error(articlesUI: ImmutableList<ArticleUI>? = null) : State(articlesUI)
+
+
+    public class Success(override val articlesUI: ImmutableList<ArticleUI>) : State(articlesUI)
 }
