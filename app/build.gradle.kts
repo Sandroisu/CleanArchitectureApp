@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.baselineprofile)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -49,8 +50,8 @@ android {
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
             )
-            proguardFile(file("proguard/"))
         }
     }
     compileOptions {
@@ -64,9 +65,7 @@ android {
         buildConfig = true
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.13"
-    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"

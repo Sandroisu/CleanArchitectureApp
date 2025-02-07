@@ -49,7 +49,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-    compileOnly(libs.androidx.compose.runtime)
-    implementation(libs.kotlinx.collections.immutable)
+    api(libs.kotlinx.collections.immutable)
     api(project(":news-data"))
 }

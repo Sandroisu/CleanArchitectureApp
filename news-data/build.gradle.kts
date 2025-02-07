@@ -11,7 +11,7 @@ kotlin {
 
 android {
     namespace = "dev.sandroisu.news.data"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24

@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.android.test) apply false
     alias(libs.plugins.baselineprofile) apply false
+    alias(libs.plugins.compose.compiler) apply false
 }
 
 //TODO: Replace detekt gradle plugin with terminal launch
