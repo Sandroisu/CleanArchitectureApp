@@ -53,6 +53,7 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
     implementation(projects.features.newsMain.domain)
     implementation(projects.newsUikit)
 }

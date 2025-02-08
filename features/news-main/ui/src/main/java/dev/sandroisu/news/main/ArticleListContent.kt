@@ -53,7 +53,9 @@ private fun Article(@PreviewParameter(ArticleUIPreviewProvider::class) article: 
             if (isImageVisible) {
                 AsyncImage(
                     model = article.imageUrl,
-                    onError = { isImageVisible = false },
+                    onError = {
+                        isImageVisible = false
+                              },
                     contentDescription = stringResource(R.string.nmain_article_image),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.size(150.dp),

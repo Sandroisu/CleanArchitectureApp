@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "dev.sandroisu.news.database"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
